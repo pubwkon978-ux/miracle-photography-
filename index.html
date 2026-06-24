@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Miracle Photography - Professional Photography Booking</title>
+    <title>Miracle Photography - Book Your Moment</title>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
@@ -14,7 +14,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+ 
         :root {
             --dark-bg: #0f1419;
             --card-bg: #1a2332;
@@ -25,32 +25,23 @@
             --border: #2a3a4a;
             --success: #10b981;
             --danger: #ef4444;
-            --warning: #f59e0b;
         }
-
+ 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--dark-bg);
             color: var(--text-primary);
             min-height: 100vh;
         }
-
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* ===== LOGIN PAGE ===== */
+ 
         .login-container {
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
-            background: linear-gradient(135deg, #0f1419 0%, #1a2332 100%);
             padding: 20px;
         }
-
+ 
         .login-box {
             background: var(--card-bg);
             padding: 50px 40px;
@@ -61,7 +52,7 @@
             width: 100%;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
         }
-
+ 
         .login-box h1 {
             font-size: 36px;
             margin-bottom: 10px;
@@ -70,18 +61,19 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
+ 
         .login-box p {
             color: var(--text-secondary);
             margin-bottom: 40px;
             font-size: 15px;
         }
-
-        #g_id_onload {
-            width: 100%;
+ 
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
         }
-
-        /* ===== HEADER ===== */
+ 
         header {
             background: rgba(26, 35, 50, 0.8);
             backdrop-filter: blur(10px);
@@ -90,8 +82,9 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            margin-bottom: 30px;
         }
-
+ 
         .header-content {
             max-width: 1400px;
             margin: 0 auto;
@@ -100,7 +93,7 @@
             justify-content: space-between;
             align-items: center;
         }
-
+ 
         .logo {
             font-size: 26px;
             font-weight: 700;
@@ -109,13 +102,13 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
-
+ 
         .user-info {
             display: flex;
             align-items: center;
             gap: 20px;
         }
-
+ 
         .user-avatar {
             width: 45px;
             height: 45px;
@@ -126,35 +119,8 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 18px;
-            border: 2px solid var(--accent-light);
         }
-
-        .user-avatar img {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .user-name {
-            display: flex;
-            flex-direction: column;
-            text-align: right;
-        }
-
-        .user-name div:first-child {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .user-name small {
-            color: var(--accent);
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        /* ===== BUTTONS ===== */
+ 
         button {
             background: var(--accent);
             color: var(--dark-bg);
@@ -166,100 +132,31 @@
             font-size: 14px;
             transition: all 0.3s ease;
         }
-
+ 
         button:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
         }
-
+ 
         .btn-secondary {
             background: var(--card-bg);
             color: var(--accent);
             border: 2px solid var(--accent);
         }
-
+ 
         .btn-secondary:hover {
             background: rgba(212, 175, 55, 0.1);
         }
-
-        .btn-danger {
-            background: var(--danger);
-            color: white;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
+ 
         .btn-success {
             background: var(--success);
             color: white;
         }
-
+ 
         .btn-success:hover {
             background: #059669;
         }
-
-        /* ===== MAIN APP ===== */
-        .main-app {
-            display: none;
-        }
-
-        .main-app.active {
-            display: block;
-        }
-
-        /* ===== HERO WITH VIDEO ===== */
-        .hero {
-            position: relative;
-            height: 500px;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-bottom: 50px;
-            display: none;
-        }
-
-        .hero.user-hero {
-            display: block;
-        }
-
-        .hero video {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .hero-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 20, 25, 0.5);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2;
-        }
-
-        .hero-content {
-            text-align: center;
-            color: white;
-        }
-
-        .hero-content h1 {
-            font-size: 56px;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .hero-content p {
-            font-size: 18px;
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        /* ===== TABS ===== */
+ 
         .tabs {
             display: flex;
             gap: 15px;
@@ -267,156 +164,98 @@
             border-bottom: 2px solid var(--border);
             flex-wrap: wrap;
         }
-
+ 
         .tab-btn {
             background: transparent;
             color: var(--text-secondary);
             border: none;
-            padding: 12px 0 12px 0;
+            padding: 12px 0;
             border-bottom: 3px solid transparent;
             cursor: pointer;
             font-weight: 600;
             transition: all 0.3s ease;
             margin-bottom: -2px;
         }
-
+ 
         .tab-btn:hover {
             color: var(--accent);
             transform: none;
             box-shadow: none;
         }
-
+ 
         .tab-btn.active {
             color: var(--accent);
             border-bottom-color: var(--accent);
         }
-
+ 
         .tab-content {
             display: none;
             animation: fadeIn 0.3s ease;
         }
-
+ 
         .tab-content.active {
             display: block;
         }
-
+ 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        /* ===== FORMS ===== */
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 600;
-            color: var(--text-primary);
-            font-size: 14px;
-        }
-
-        input, textarea, select {
-            width: 100%;
-            padding: 12px 14px;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-size: 14px;
-            font-family: inherit;
-            transition: all 0.3s ease;
-        }
-
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
-            background: rgba(212, 175, 55, 0.05);
-        }
-
-        textarea {
-            resize: vertical;
-        }
-
-        /* ===== UPLOAD AREA ===== */
-        .upload-area {
-            border: 2px dashed var(--accent);
-            border-radius: 10px;
-            padding: 40px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            background: rgba(212, 175, 55, 0.05);
-        }
-
-        .upload-area:hover {
-            background: rgba(212, 175, 55, 0.1);
-            border-color: var(--accent-light);
-        }
-
-        .upload-area.dragover {
-            background: rgba(212, 175, 55, 0.15);
-            border-color: var(--accent-light);
-            transform: scale(1.02);
-        }
-
-        /* ===== CARDS & GRIDS ===== */
+ 
         .card {
             background: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 12px;
             padding: 30px;
-            transition: all 0.3s ease;
+            margin-bottom: 30px;
         }
-
-        .card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.1);
-        }
-
-        .grid {
+ 
+        .category-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 40px;
         }
-
+ 
         .category-card {
             background: var(--card-bg);
             border: 2px solid var(--border);
             border-radius: 12px;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
         }
-
+ 
         .category-card:hover {
             border-color: var(--accent);
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
         }
-
+ 
         .category-card.active {
             background: rgba(212, 175, 55, 0.1);
             border-color: var(--accent);
         }
-
+ 
         .category-icon {
             font-size: 40px;
             margin-bottom: 12px;
         }
-
+ 
         .category-name {
             font-weight: 700;
             font-size: 16px;
             color: var(--accent);
         }
-
-        /* ===== PHOTO CARDS ===== */
+ 
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+ 
         .photo-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -424,30 +263,30 @@
             border: 1px solid var(--border);
             transition: all 0.3s ease;
         }
-
+ 
         .photo-card:hover {
             transform: translateY(-8px);
             border-color: var(--accent);
             box-shadow: 0 15px 40px rgba(212, 175, 55, 0.15);
         }
-
+ 
         .photo-card img {
             width: 100%;
             height: 220px;
             object-fit: cover;
         }
-
+ 
         .photo-info {
             padding: 20px;
         }
-
+ 
         .photo-title {
             font-weight: 700;
             margin-bottom: 8px;
             color: var(--text-primary);
             font-size: 16px;
         }
-
+ 
         .photo-category {
             display: inline-block;
             background: rgba(212, 175, 55, 0.1);
@@ -458,130 +297,54 @@
             font-weight: 600;
             margin-bottom: 10px;
         }
-
+ 
         .photo-desc {
             font-size: 13px;
             color: var(--text-secondary);
             margin-bottom: 12px;
             line-height: 1.5;
         }
-
+ 
         .photo-price {
             color: var(--accent);
             font-weight: 700;
             font-size: 20px;
             margin-bottom: 15px;
         }
-
-        .photo-actions {
-            display: flex;
-            gap: 10px;
-        }
-
-        .photo-actions button {
-            flex: 1;
-            padding: 10px;
-            font-size: 13px;
-        }
-
-        /* ===== CAROUSEL ===== */
-        .carousel-container {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            background: var(--card-bg);
-            border: 1px solid var(--border);
-            margin-bottom: 30px;
-            height: 450px;
-        }
-
-        .carousel-slide {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.8s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .carousel-slide.active {
-            opacity: 1;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .carousel-controls {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            gap: 10px;
-            z-index: 10;
-        }
-
-        .carousel-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border: 2px solid rgba(255, 255, 255, 0);
-        }
-
-        .carousel-dot.active {
-            background: var(--accent);
-            border-color: var(--accent);
-            width: 30px;
-            border-radius: 6px;
-        }
-
-        /* ===== TABLES ===== */
+ 
         .table-container {
             overflow-x: auto;
             border-radius: 12px;
             border: 1px solid var(--border);
         }
-
+ 
         table {
             width: 100%;
             border-collapse: collapse;
             background: var(--card-bg);
         }
-
+ 
         thead {
             background: rgba(212, 175, 55, 0.1);
             border-bottom: 2px solid var(--border);
         }
-
+ 
         th, td {
             padding: 16px;
             text-align: left;
             border-bottom: 1px solid var(--border);
             font-size: 14px;
         }
-
+ 
         th {
             font-weight: 700;
             color: var(--accent);
         }
-
+ 
         tr:hover {
             background: rgba(212, 175, 55, 0.05);
         }
-
-        tr:last-child td {
-            border-bottom: none;
-        }
-
-        /* ===== STATUS BADGES ===== */
+ 
         .status-badge {
             display: inline-block;
             padding: 6px 12px;
@@ -589,22 +352,22 @@
             font-size: 12px;
             font-weight: 700;
         }
-
+ 
         .status-pending {
             background: rgba(245, 158, 11, 0.2);
             color: #fbbf24;
         }
-
+ 
         .status-approved {
             background: rgba(16, 185, 129, 0.2);
             color: #6ee7b7;
         }
-
+ 
         .status-rejected {
             background: rgba(239, 68, 68, 0.2);
             color: #fca5a5;
         }
-
+ 
         /* ===== MODAL ===== */
         .modal {
             display: none;
@@ -620,11 +383,11 @@
             justify-content: center;
             padding: 20px;
         }
-
+ 
         .modal.active {
             display: flex;
         }
-
+ 
         .modal-content {
             background: var(--card-bg);
             padding: 40px;
@@ -632,11 +395,10 @@
             max-width: 550px;
             width: 100%;
             border: 1px solid var(--border);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
             max-height: 90vh;
             overflow-y: auto;
         }
-
+ 
         .modal-close {
             float: right;
             font-size: 32px;
@@ -646,15 +408,46 @@
             border: none;
             padding: 0;
             margin-top: -10px;
-            margin-right: -10px;
-            transition: all 0.3s ease;
         }
-
+ 
         .modal-close:hover {
             color: var(--accent);
         }
-
-        /* ===== MESSAGES ===== */
+ 
+        .form-group {
+            margin-bottom: 20px;
+        }
+ 
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 14px;
+        }
+ 
+        input, textarea {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+ 
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+        }
+ 
+        textarea {
+            resize: vertical;
+        }
+ 
         .message {
             padding: 15px 20px;
             border-radius: 8px;
@@ -663,143 +456,60 @@
             border-left: 4px solid;
             font-weight: 500;
         }
-
+ 
         .message.show {
             display: block;
-            animation: slideIn 0.3s ease;
         }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
-
+ 
         .success-message {
             background: rgba(16, 185, 129, 0.15);
             color: #6ee7b7;
             border-color: #10b981;
         }
-
+ 
         .error-message {
             background: rgba(239, 68, 68, 0.15);
             color: #fca5a5;
             border-color: #ef4444;
         }
-
-        .warning-message {
-            background: rgba(245, 158, 11, 0.15);
-            color: #fbbf24;
-            border-color: #f59e0b;
-        }
-
-        /* ===== EMPTY STATE ===== */
+ 
         .empty-state {
             text-align: center;
             padding: 60px 20px;
             color: var(--text-secondary);
         }
-
-        .empty-state svg {
-            width: 100px;
-            height: 100px;
-            margin-bottom: 20px;
-            opacity: 0.3;
-        }
-
-        .empty-state p {
-            font-size: 16px;
-            margin-bottom: 20px;
-        }
-
-        /* ===== RESPONSIVE ===== */
+ 
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
             }
-
-            .header-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .hero {
-                height: 300px;
-            }
-
-            .hero-content h1 {
-                font-size: 36px;
-            }
-
-            .hero-content p {
-                font-size: 14px;
-            }
-
-            .grid {
+ 
+            .photo-grid {
                 grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
                 gap: 15px;
             }
-
-            .carousel-container {
-                height: 300px;
+ 
+            .category-grid {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
             }
-
-            .tabs {
-                gap: 10px;
-            }
-
-            .tab-btn {
-                font-size: 13px;
-                padding: 10px 0;
-            }
-
-            .modal-content {
-                padding: 30px 20px;
-            }
-
+ 
             table {
                 font-size: 12px;
             }
-
+ 
             th, td {
-                padding: 12px 8px;
+                padding: 10px 8px;
             }
-        }
-
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .stat-card {
-            background: rgba(212, 175, 55, 0.1);
-            border: 1px solid var(--accent);
-            border-radius: 12px;
-            padding: 25px;
-            text-align: center;
-        }
-
-        .stat-number {
-            font-size: 32px;
-            font-weight: 700;
-            color: var(--accent);
-            margin-bottom: 8px;
-        }
-
-        .stat-label {
-            color: var(--text-secondary);
-            font-size: 14px;
         }
     </style>
 </head>
 <body>
-
+ 
 <!-- LOGIN PAGE -->
 <div id="loginPage" class="login-container">
     <div class="login-box">
         <h1>📸 Miracle Photography</h1>
-        <p>Sign in to book your perfect moment</p>
+        <p>Book Your Perfect Photography Session</p>
         <div id="g_id_onload"
             data-client_id="YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
             data-callback="handleGoogleSignIn">
@@ -807,256 +517,84 @@
         <div id="g_id_signin" data-type="standard" data-size="large" data-theme="filled_black"></div>
     </div>
 </div>
-
+ 
 <!-- MAIN APP -->
-<div id="mainApp" class="main-app">
-    <!-- HEADER -->
+<div id="mainApp" style="display: none;">
     <header>
         <div class="header-content">
             <div class="logo">✨ Miracle Photography</div>
             <div class="user-info">
-                <div class="user-avatar" id="userAvatar">M</div>
-                <div class="user-name">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <div>
                     <div id="userName">User</div>
-                    <small id="userRole">User</small>
+                    <small id="userEmail" style="color: var(--text-secondary);">user@example.com</small>
                 </div>
                 <button onclick="logout()">Logout</button>
             </div>
         </div>
     </header>
-
+ 
     <div class="container">
         <!-- MESSAGES -->
         <div id="successMsg" class="message success-message"></div>
         <div id="errorMsg" class="message error-message"></div>
-        <div id="warningMsg" class="message warning-message"></div>
-
-        <!-- USER SECTION -->
-        <div id="userSection">
-            <!-- HERO WITH VIDEO -->
-            <div class="hero user-hero">
-                <video autoplay muted loop playsinline>
-                    <source src="video.mp4" type="video/mp4">
-                </video>
-                <div class="hero-overlay">
-                    <div class="hero-content">
-                        <h1>Capture Your Moments</h1>
-                        <p>Professional Photography Services</p>
-                    </div>
+ 
+        <!-- TABS -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('browse')">Browse Gallery</button>
+            <button class="tab-btn" onclick="switchTab('myBookings')">My Bookings</button>
+        </div>
+ 
+        <!-- BROWSE TAB -->
+        <div id="browse" class="tab-content active">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">📸 Select Category</h2>
+                <div class="category-grid" id="categoryGrid"></div>
+            </div>
+ 
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">🎨 <span id="selectedCategoryName">All Packages</span></h2>
+                <div class="photo-grid" id="photoGrid"></div>
+                <div id="noPhotos" class="empty-state">
+                    <p>No photos available in this category</p>
                 </div>
             </div>
-
-            <!-- CATEGORY SELECTION -->
-            <div style="margin-bottom: 40px;">
-                <h2 style="margin-bottom: 20px; font-size: 24px;">Select Category</h2>
-                <div class="grid" id="categoryGrid" style="grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));">
-                </div>
-            </div>
-
-            <!-- CAROUSEL -->
-            <div style="margin-bottom: 40px;">
-                <h2 style="margin-bottom: 20px; font-size: 24px;">Featured Gallery</h2>
-                <div class="carousel-container" id="carouselContainer">
-                    <div id="carouselSlides"></div>
-                    <div class="carousel-controls" id="carouselControls"></div>
-                </div>
-            </div>
-
-            <!-- TABS -->
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchTab('browsing')">Browse All</button>
-                <button class="tab-btn" onclick="switchTab('myBookings')">My Bookings</button>
-            </div>
-
-            <!-- BROWSE TAB -->
-            <div id="browsing" class="tab-content active">
-                <div class="grid" id="userGallery"></div>
-                <div id="noPhotosUser" class="empty-state">
-                    <p>No packages available yet</p>
-                </div>
-            </div>
-
-            <!-- MY BOOKINGS TAB -->
-            <div id="myBookings" class="tab-content">
+        </div>
+ 
+        <!-- MY BOOKINGS TAB -->
+        <div id="myBookings" class="tab-content">
+            <div class="card">
+                <h2 style="margin-bottom: 20px;">📅 My Booking Requests</h2>
                 <div class="table-container">
-                    <table id="userBookingTable">
+                    <table id="myBookingsTable">
                         <thead>
                             <tr>
                                 <th>Package</th>
                                 <th>Category</th>
                                 <th>Event Date</th>
-                                <th>Status</th>
                                 <th>Booked On</th>
-                            </tr>
-                        </thead>
-                        <tbody id="userBookingList"></tbody>
-                    </table>
-                </div>
-                <div id="noUserBookings" class="empty-state">
-                    <p>You haven't made any bookings yet</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- ADMIN SECTION -->
-        <div id="adminSection" style="display: none;">
-            <!-- TABS -->
-            <div class="tabs">
-                <button class="tab-btn active" onclick="switchAdminTab('dashboard')">Dashboard</button>
-                <button class="tab-btn" onclick="switchAdminTab('addCategory')">Add Category</button>
-                <button class="tab-btn" onclick="switchAdminTab('uploadPhoto')">Upload Photo</button>
-                <button class="tab-btn" onclick="switchAdminTab('managePhotos')">Manage Photos</button>
-                <button class="tab-btn" onclick="switchAdminTab('bookings')">Bookings</button>
-                <button class="tab-btn" onclick="switchAdminTab('users')">Users</button>
-            </div>
-
-            <!-- DASHBOARD TAB -->
-            <div id="dashboard" class="tab-content active">
-                <div class="admin-grid" id="statsGrid">
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalPhotos">0</div>
-                        <div class="stat-label">Total Photos</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalCategories">0</div>
-                        <div class="stat-label">Categories</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="pendingBookings">0</div>
-                        <div class="stat-label">Pending Bookings</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-number" id="totalUsers">0</div>
-                        <div class="stat-label">Total Users</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- ADD CATEGORY TAB -->
-            <div id="addCategory" class="tab-content">
-                <div class="card">
-                    <h2 style="margin-bottom: 20px;">Add New Category</h2>
-                    <form id="categoryForm">
-                        <div class="form-group">
-                            <label>Category Name</label>
-                            <input type="text" id="categoryName" placeholder="e.g., Weddings" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Icon/Emoji</label>
-                            <input type="text" id="categoryIcon" placeholder="e.g., 💒" maxlength="2" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea id="categoryDesc" placeholder="Describe this category..." rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn-success" style="width: 100%;">Create Category</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- UPLOAD PHOTO TAB -->
-            <div id="uploadPhoto" class="tab-content">
-                <div class="card">
-                    <h2 style="margin-bottom: 20px;">Upload New Photo</h2>
-                    <form id="uploadForm">
-                        <div class="form-group">
-                            <label>Select Category</label>
-                            <select id="photoCategory" required>
-                                <option value="">-- Select Category --</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>Photo Title</label>
-                            <input type="text" id="photoTitle" placeholder="e.g., Wedding Coverage Package" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Description</label>
-                            <textarea id="photoDesc" placeholder="Describe this photography package..." rows="4"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label>Price (LKR)</label>
-                            <input type="number" id="photoPrice" placeholder="50000" required>
-                        </div>
-                        <div class="form-group">
-                            <label>Upload Image</label>
-                            <div class="upload-area" id="uploadArea" ondrop="handleDrop(event)" ondragover="handleDragOver(event)" ondragleave="handleDragLeave(event)" onclick="document.getElementById('photoFile').click()">
-                                <p style="margin-bottom: 10px;">📁 Click to upload or drag and drop</p>
-                                <p style="font-size: 12px; color: var(--text-secondary);">JPG, PNG up to 5MB</p>
-                                <input type="file" id="photoFile" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
-                            </div>
-                            <small id="fileName" style="display: block; margin-top: 10px; color: var(--text-secondary);"></small>
-                        </div>
-                        <button type="submit" class="btn-success" style="width: 100%;">Upload Photo</button>
-                    </form>
-                </div>
-            </div>
-
-            <!-- MANAGE PHOTOS TAB -->
-            <div id="managePhotos" class="tab-content">
-                <div style="margin-bottom: 20px;">
-                    <h2>Manage Photos</h2>
-                </div>
-                <div class="grid" id="adminGallery"></div>
-                <div id="noPhotosAdmin" class="empty-state">
-                    <p>No photos uploaded yet</p>
-                </div>
-            </div>
-
-            <!-- BOOKINGS TAB -->
-            <div id="bookings" class="tab-content">
-                <div class="table-container">
-                    <table id="adminBookingTable">
-                        <thead>
-                            <tr>
-                                <th>Client Name</th>
-                                <th>Email</th>
-                                <th>Phone</th>
-                                <th>Package</th>
-                                <th>Event Date</th>
                                 <th>Status</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
-                        <tbody id="adminBookingList"></tbody>
+                        <tbody id="myBookingsList"></tbody>
                     </table>
                 </div>
-                <div id="noBookingsAdmin" class="empty-state">
-                    <p>No bookings yet</p>
-                </div>
-            </div>
-
-            <!-- USERS TAB -->
-            <div id="users" class="tab-content">
-                <div class="table-container">
-                    <table id="usersTable">
-                        <thead>
-                            <tr>
-                                <th>User Name</th>
-                                <th>Email</th>
-                                <th>Bookings</th>
-                                <th>Last Booking</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="usersList"></tbody>
-                    </table>
-                </div>
-                <div id="noUsersData" class="empty-state">
-                    <p>No users yet</p>
+                <div id="noMyBookings" class="empty-state">
+                    <p>You haven't made any bookings yet</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+ 
 <!-- BOOKING MODAL -->
 <div id="bookingModal" class="modal">
     <div class="modal-content">
         <button class="modal-close" onclick="closeModal()">&times;</button>
-        <h2 style="margin-bottom: 25px;">Book This Package</h2>
+        <h2 style="margin-bottom: 25px;">📅 Book This Package</h2>
         <form id="bookingForm">
             <div class="form-group">
-                <label>Package</label>
+                <label>Package Name</label>
                 <input type="text" id="bookingPackage" readonly>
             </div>
             <div class="form-group">
@@ -1076,7 +614,7 @@
                 <input type="email" id="clientEmail" readonly>
             </div>
             <div class="form-group">
-                <label>Phone Number</label>
+                <label>Your Phone Number</label>
                 <input type="tel" id="clientPhone" placeholder="077 XXXXXXX" required>
             </div>
             <div class="form-group">
@@ -1084,14 +622,14 @@
                 <input type="date" id="eventDate" required>
             </div>
             <div class="form-group">
-                <label>Special Requests</label>
-                <textarea id="specialRequests" placeholder="Any special requests..." rows="4"></textarea>
+                <label>Special Requests / Notes</label>
+                <textarea id="specialRequests" placeholder="Tell us about your photography needs..." rows="4"></textarea>
             </div>
-            <button type="submit" class="btn-success" style="width: 100%;">Submit Booking</button>
+            <button type="submit" class="btn-success" style="width: 100%; padding: 14px;">Submit Booking Request</button>
         </form>
     </div>
 </div>
-
+ 
 <script>
     // ===== FIREBASE CONFIG =====
     const firebaseConfig = {
@@ -1102,261 +640,96 @@
         messagingSenderId: "161447950350",
         appId: "1:161447950350:web:5e2a4e24543ad93e86645f"
     };
-
-    // ===== CLOUDINARY CONFIG =====
-    const CLOUDINARY_CLOUD_NAME = "dnvx958gz";
-    const CLOUDINARY_UPLOAD_PRESET = "miracle";
-    const CLOUDINARY_FOLDER = "miracle";
-
-    // ===== ADMIN EMAIL =====
-    const ADMIN_EMAIL = "dilumfox97@gmail.com";
-
-    // Initialize Firebase
+ 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
     const db = firebase.database();
-
+ 
     let currentUser = null;
-    let isAdmin = false;
     let currentPhotoId = null;
     let selectedCategory = null;
-    let allCategories = {};
-    let carouselPhotos = [];
-    let currentCarouselIndex = 0;
-
+ 
+    const CATEGORIES = {
+        "weddings": "💒 Weddings",
+        "nature": "🌿 Nature",
+        "models": "👤 Models",
+        "animals": "🦁 Animals",
+        "preshoots": "✨ Pre-shoots"
+    };
+ 
     // ===== GOOGLE SIGN-IN =====
     function handleGoogleSignIn(response) {
         const token = response.credential;
-        const decoded = parseJwt(token);
-
         const credential = firebase.auth.GoogleAuthProvider.credential(token);
         auth.signInWithCredential(credential)
-            .then(() => {
-                checkAuth();
-            })
-            .catch(error => {
-                showMessage("Sign-in failed: " + error.message, "error");
-            });
+            .then(() => checkAuth())
+            .catch(error => showMessage("Sign-in failed: " + error.message, "error"));
     }
-
-    function parseJwt(token) {
-        const base64Url = token.split('.')[1];
-        const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
-            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-        }).join(''));
-        return JSON.parse(jsonPayload);
-    }
-
+ 
     function checkAuth() {
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
-                isAdmin = user.email === ADMIN_EMAIL;
                 document.getElementById('loginPage').style.display = 'none';
-                document.getElementById('mainApp').classList.add('active');
+                document.getElementById('mainApp').style.display = 'block';
                 updateUserInfo();
                 loadCategories();
                 loadPhotos();
-                loadBookings();
-
-                if (isAdmin) {
-                    document.getElementById('userSection').style.display = 'none';
-                    document.getElementById('adminSection').style.display = 'block';
-                    updateAdminDashboard();
-                } else {
-                    document.getElementById('adminSection').style.display = 'none';
-                    document.getElementById('userSection').style.display = 'block';
-                }
+                loadMyBookings();
             } else {
                 document.getElementById('loginPage').style.display = 'flex';
-                document.getElementById('mainApp').classList.remove('active');
+                document.getElementById('mainApp').style.display = 'none';
             }
         });
     }
-
+ 
     function updateUserInfo() {
         document.getElementById('userName').textContent = currentUser.displayName || 'User';
-        document.getElementById('userRole').textContent = isAdmin ? '👑 Admin' : 'User';
+        document.getElementById('userEmail').textContent = currentUser.email;
         const initial = (currentUser.displayName || 'U')[0].toUpperCase();
-        if (currentUser.photoURL) {
-            document.getElementById('userAvatar').innerHTML = `<img src="${currentUser.photoURL}" alt="avatar">`;
-        } else {
-            document.getElementById('userAvatar').textContent = initial;
-        }
+        document.getElementById('userAvatar').textContent = initial;
     }
-
+ 
     function logout() {
         auth.signOut().then(() => {
             currentUser = null;
-            isAdmin = false;
             selectedCategory = null;
         });
     }
-
-    // ===== FILE UPLOAD =====
-    function handleDragOver(e) {
-        e.preventDefault();
-        document.getElementById('uploadArea').classList.add('dragover');
-    }
-
-    function handleDragLeave(e) {
-        document.getElementById('uploadArea').classList.remove('dragover');
-    }
-
-    function handleDrop(e) {
-        e.preventDefault();
-        document.getElementById('uploadArea').classList.remove('dragover');
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            const input = document.getElementById('photoFile');
-            input.files = files;
-            handleFileSelect({ target: { files: files } });
-        }
-    }
-
-    function handleFileSelect(e) {
-        const file = e.target.files[0];
-        if (file) {
-            document.getElementById('fileName').textContent = `Selected: ${file.name}`;
-        }
-    }
-
-    function uploadPhotoToCloudinary(file) {
-        return new Promise((resolve, reject) => {
-            const formData = new FormData();
-            formData.append('file', file);
-            formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-            formData.append('folder', CLOUDINARY_FOLDER);
-
-            fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.secure_url) {
-                    resolve(data.secure_url);
-                } else {
-                    reject(data.error ? data.error.message : 'Upload failed');
-                }
-            })
-            .catch(error => reject(error));
-        });
-    }
-
-    // ===== CATEGORIES =====
-    document.getElementById('categoryForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const categoryData = {
-            name: document.getElementById('categoryName').value,
-            icon: document.getElementById('categoryIcon').value,
-            description: document.getElementById('categoryDesc').value,
-            createdAt: new Date().toISOString()
-        };
-
-        try {
-            await db.ref('categories').push().set(categoryData);
-            showMessage('Category created successfully!', 'success');
-            document.getElementById('categoryForm').reset();
-            loadCategories();
-        } catch (error) {
-            showMessage('Failed to create category: ' + error, 'error');
-        }
-    });
-
+ 
+    // ===== LOAD CATEGORIES =====
     function loadCategories() {
-        db.ref('categories').on('value', (snapshot) => {
-            allCategories = {};
-            const categoryGrid = document.getElementById('categoryGrid');
-            categoryGrid.innerHTML = '';
-
-            snapshot.forEach(child => {
-                const id = child.key;
-                const data = child.val();
-                allCategories[id] = data;
-
-                const card = document.createElement('div');
-                card.className = 'category-card';
-                if (selectedCategory === id) card.classList.add('active');
-                card.onclick = () => filterByCategory(id);
-                card.innerHTML = `
-                    <div class="category-icon">${data.icon}</div>
-                    <div class="category-name">${data.name}</div>
-                `;
-                categoryGrid.appendChild(card);
-            });
-
-            // Update admin dropdown
-            const dropdown = document.getElementById('photoCategory');
-            const selected = dropdown.value;
-            dropdown.innerHTML = '<option value="">-- Select Category --</option>';
-            snapshot.forEach(child => {
-                const option = document.createElement('option');
-                option.value = child.key;
-                option.textContent = child.val().name;
-                dropdown.appendChild(option);
-            });
-            if (selected) dropdown.value = selected;
-
-            document.getElementById('totalCategories').textContent = snapshot.numChildren;
+        const categoryGrid = document.getElementById('categoryGrid');
+        categoryGrid.innerHTML = '';
+ 
+        Object.keys(CATEGORIES).forEach(catId => {
+            const card = document.createElement('div');
+            card.className = 'category-card';
+            if (selectedCategory === catId) card.classList.add('active');
+            card.onclick = () => filterByCategory(catId);
+            
+            const [emoji, name] = CATEGORIES[catId].split(' ');
+            card.innerHTML = `
+                <div class="category-icon">${emoji}</div>
+                <div class="category-name">${name}</div>
+            `;
+            categoryGrid.appendChild(card);
         });
     }
-
+ 
     function filterByCategory(categoryId) {
         selectedCategory = selectedCategory === categoryId ? null : categoryId;
         loadPhotos();
-
-        // Update UI
-        document.querySelectorAll('.category-card').forEach(card => card.classList.remove('active'));
+        loadCategories();
+ 
         if (selectedCategory) {
-            event.target.closest('.category-card').classList.add('active');
+            document.getElementById('selectedCategoryName').textContent = CATEGORIES[selectedCategory];
+        } else {
+            document.getElementById('selectedCategoryName').textContent = 'All Packages';
         }
     }
-
-    // ===== PHOTOS =====
-    document.getElementById('uploadForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const file = document.getElementById('photoFile').files[0];
-        if (!file) {
-            showMessage('Please select a photo', 'error');
-            return;
-        }
-
-        const categoryId = document.getElementById('photoCategory').value;
-        if (!categoryId) {
-            showMessage('Please select a category', 'error');
-            return;
-        }
-
-        try {
-            showMessage('Uploading...', 'warning');
-            const imageUrl = await uploadPhotoToCloudinary(file);
-
-            const photoData = {
-                title: document.getElementById('photoTitle').value,
-                description: document.getElementById('photoDesc').value,
-                price: parseInt(document.getElementById('photoPrice').value),
-                categoryId: categoryId,
-                categoryName: allCategories[categoryId].name,
-                imageUrl: imageUrl,
-                createdAt: new Date().toISOString(),
-                uploadedBy: currentUser.email
-            };
-
-            await db.ref('photos').push().set(photoData);
-            showMessage('Photo uploaded successfully!', 'success');
-            document.getElementById('uploadForm').reset();
-            document.getElementById('fileName').textContent = '';
-            loadPhotos();
-        } catch (error) {
-            console.error(error);
-            showMessage('Upload failed: ' + error, 'error');
-        }
-    });
-
+ 
+    // ===== LOAD PHOTOS =====
     function loadPhotos() {
         db.ref('photos').on('value', (snapshot) => {
             let photos = [];
@@ -1366,47 +739,27 @@
                     ...child.val()
                 });
             });
-
+ 
             // Filter by category if selected
             if (selectedCategory) {
                 photos = photos.filter(p => p.categoryId === selectedCategory);
             }
-
-            // Update carousel
-            carouselPhotos = photos.sort(() => Math.random() - 0.5).slice(0, 10);
-            updateCarousel();
-
-            // User gallery
-            const userGallery = document.getElementById('userGallery');
-            userGallery.innerHTML = '';
+ 
+            const photoGrid = document.getElementById('photoGrid');
+            photoGrid.innerHTML = '';
+ 
             if (photos.length > 0) {
-                document.getElementById('noPhotosUser').style.display = 'none';
+                document.getElementById('noPhotos').style.display = 'none';
                 photos.forEach(photo => {
-                    userGallery.appendChild(createUserPhotoCard(photo));
+                    photoGrid.appendChild(createPhotoCard(photo));
                 });
             } else {
-                document.getElementById('noPhotosUser').style.display = 'block';
+                document.getElementById('noPhotos').style.display = 'block';
             }
-
-            // Admin gallery
-            if (isAdmin) {
-                const adminGallery = document.getElementById('adminGallery');
-                adminGallery.innerHTML = '';
-                if (photos.length > 0) {
-                    document.getElementById('noPhotosAdmin').style.display = 'none';
-                    photos.forEach(photo => {
-                        adminGallery.appendChild(createAdminPhotoCard(photo));
-                    });
-                } else {
-                    document.getElementById('noPhotosAdmin').style.display = 'block';
-                }
-            }
-
-            document.getElementById('totalPhotos').textContent = snapshot.numChildren;
         });
     }
-
-    function createUserPhotoCard(photo) {
+ 
+    function createPhotoCard(photo) {
         const card = document.createElement('div');
         card.className = 'photo-card';
         card.innerHTML = `
@@ -1414,77 +767,15 @@
             <div class="photo-info">
                 <div class="photo-category">${photo.categoryName}</div>
                 <div class="photo-title">${photo.title}</div>
-                <div class="photo-desc">${photo.description || 'No description'}</div>
+                <div class="photo-desc">${photo.description || 'Professional photography package'}</div>
                 <div class="photo-price">LKR ${photo.price.toLocaleString()}</div>
-                <div class="photo-actions">
-                    <button onclick="openBookingModal('${photo.id}', '${photo.title}', '${photo.categoryName}', '${photo.price}')" class="btn-success">Book Now</button>
-                </div>
+                <button onclick="openBookingModal('${photo.id}', '${photo.title}', '${photo.categoryName}', '${photo.price}')" class="btn-success" style="width: 100%; margin-top: 10px;">Book Now</button>
             </div>
         `;
         return card;
     }
-
-    function createAdminPhotoCard(photo) {
-        const card = document.createElement('div');
-        card.className = 'photo-card';
-        card.innerHTML = `
-            <img src="${photo.imageUrl}" alt="${photo.title}">
-            <div class="photo-info">
-                <div class="photo-category">${photo.categoryName}</div>
-                <div class="photo-title">${photo.title}</div>
-                <div class="photo-price">LKR ${photo.price.toLocaleString()}</div>
-                <div class="photo-actions">
-                    <button onclick="deletePhoto('${photo.id}')" class="btn-danger">Delete</button>
-                </div>
-            </div>
-        `;
-        return card;
-    }
-
-    function deletePhoto(photoId) {
-        if (confirm('Delete this photo?')) {
-            db.ref('photos/' + photoId).remove().then(() => {
-                showMessage('Photo deleted', 'success');
-                loadPhotos();
-            }).catch(err => showMessage('Delete failed: ' + err, 'error'));
-        }
-    }
-
-    // ===== CAROUSEL =====
-    function updateCarousel() {
-        const container = document.getElementById('carouselSlides');
-        container.innerHTML = '';
-        const controls = document.getElementById('carouselControls');
-        controls.innerHTML = '';
-
-        carouselPhotos.forEach((photo, index) => {
-            const slide = document.createElement('div');
-            slide.className = 'carousel-slide' + (index === 0 ? ' active' : '');
-            slide.innerHTML = `<img src="${photo.imageUrl}" alt="${photo.title}">`;
-            container.appendChild(slide);
-
-            const dot = document.createElement('div');
-            dot.className = 'carousel-dot' + (index === 0 ? ' active' : '');
-            dot.onclick = () => showCarouselSlide(index);
-            controls.appendChild(dot);
-        });
-
-        setInterval(() => {
-            currentCarouselIndex = (currentCarouselIndex + 1) % carouselPhotos.length;
-            showCarouselSlide(currentCarouselIndex);
-        }, 5000);
-    }
-
-    function showCarouselSlide(index) {
-        currentCarouselIndex = index;
-        document.querySelectorAll('.carousel-slide').forEach(slide => slide.classList.remove('active'));
-        document.querySelectorAll('.carousel-dot').forEach(dot => dot.classList.remove('active'));
-        
-        document.querySelectorAll('.carousel-slide')[index].classList.add('active');
-        document.querySelectorAll('.carousel-dot')[index].classList.add('active');
-    }
-
-    // ===== BOOKING =====
+ 
+    // ===== BOOKING MODAL =====
     function openBookingModal(photoId, title, category, price) {
         currentPhotoId = photoId;
         document.getElementById('bookingPackage').value = title;
@@ -1494,176 +785,88 @@
         document.getElementById('clientEmail').value = currentUser.email;
         document.getElementById('bookingModal').classList.add('active');
     }
-
+ 
     function closeModal() {
         document.getElementById('bookingModal').classList.remove('active');
         document.getElementById('bookingForm').reset();
     }
-
+ 
+    // ===== BOOKING FORM SUBMIT =====
     document.getElementById('bookingForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-
+ 
         const bookingData = {
             clientName: currentUser.displayName || document.getElementById('clientName').value,
             clientEmail: currentUser.email,
             clientPhone: document.getElementById('clientPhone').value,
             photoId: currentPhotoId,
+            packageName: document.getElementById('bookingPackage').value,
+            categoryName: document.getElementById('bookingCategory').value,
             eventDate: document.getElementById('eventDate').value,
             specialRequests: document.getElementById('specialRequests').value,
             status: 'pending',
             bookedAt: new Date().toISOString()
         };
-
+ 
         try {
             await db.ref('bookings').push().set(bookingData);
             showMessage('Booking request submitted! Admin will contact you soon.', 'success');
             closeModal();
-            loadBookings();
+            loadMyBookings();
         } catch (error) {
-            showMessage('Booking failed: ' + error, 'error');
+            console.error(error);
+            showMessage('Booking failed: ' + error.message, 'error');
         }
     });
-
-    // ===== BOOKINGS MANAGEMENT =====
-    function loadBookings() {
+ 
+    // ===== LOAD MY BOOKINGS =====
+    function loadMyBookings() {
         db.ref('bookings').on('value', (snapshot) => {
-            let bookings = [];
-            snapshot.forEach(child => {
-                bookings.push({
-                    id: child.key,
-                    ...child.val()
-                });
-            });
-
-            // Admin bookings table
-            if (isAdmin) {
-                const adminList = document.getElementById('adminBookingList');
-                adminList.innerHTML = '';
-                if (bookings.length > 0) {
-                    document.getElementById('noBookingsAdmin').style.display = 'none';
-                    bookings.forEach(booking => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${booking.clientName}</td>
-                            <td>${booking.clientEmail}</td>
-                            <td>${booking.clientPhone}</td>
-                            <td>${booking.photoId}</td>
-                            <td>${new Date(booking.eventDate).toLocaleDateString()}</td>
-                            <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
-                            <td>
-                                <button onclick="updateBookingStatus('${booking.id}', 'approved')" class="btn-success" style="padding: 6px 12px; font-size: 12px;">✓</button>
-                                <button onclick="updateBookingStatus('${booking.id}', 'rejected')" class="btn-danger" style="padding: 6px 12px; font-size: 12px;">✕</button>
-                            </td>
-                        `;
-                        adminList.appendChild(row);
-                    });
-                } else {
-                    document.getElementById('noBookingsAdmin').style.display = 'block';
-                }
-
-                document.getElementById('pendingBookings').textContent = bookings.filter(b => b.status === 'pending').length;
-            }
-
-            // User bookings table
-            if (!isAdmin) {
-                const userList = document.getElementById('userBookingList');
-                userList.innerHTML = '';
-                const userBookings = bookings.filter(b => b.clientEmail === currentUser.email);
-                if (userBookings.length > 0) {
-                    document.getElementById('noUserBookings').style.display = 'none';
-                    userBookings.forEach(booking => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${booking.photoId}</td>
-                            <td>${booking.categoryName || '-'}</td>
-                            <td>${new Date(booking.eventDate).toLocaleDateString()}</td>
-                            <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
-                            <td>${new Date(booking.bookedAt).toLocaleDateString()}</td>
-                        `;
-                        userList.appendChild(row);
-                    });
-                } else {
-                    document.getElementById('noUserBookings').style.display = 'block';
-                }
-            }
-        });
-    }
-
-    function updateBookingStatus(bookingId, status) {
-        db.ref('bookings/' + bookingId + '/status').set(status).then(() => {
-            showMessage(`Booking ${status}!`, 'success');
-            loadBookings();
-        }).catch(err => showMessage('Update failed: ' + err, 'error'));
-    }
-
-    // ===== USERS MANAGEMENT =====
-    function loadUsersData() {
-        db.ref('bookings').on('value', (snapshot) => {
-            const usersMap = {};
+            const userBookings = [];
             snapshot.forEach(child => {
                 const booking = child.val();
-                if (!usersMap[booking.clientEmail]) {
-                    usersMap[booking.clientEmail] = {
-                        name: booking.clientName,
-                        email: booking.clientEmail,
-                        bookings: 0,
-                        lastBooking: null
-                    };
-                }
-                usersMap[booking.clientEmail].bookings++;
-                if (!usersMap[booking.clientEmail].lastBooking || new Date(booking.bookedAt) > new Date(usersMap[booking.clientEmail].lastBooking)) {
-                    usersMap[booking.clientEmail].lastBooking = booking.bookedAt;
+                if (booking.clientEmail === currentUser.email) {
+                    userBookings.push({
+                        id: child.key,
+                        ...booking
+                    });
                 }
             });
-
-            const usersList = document.getElementById('usersList');
-            usersList.innerHTML = '';
-            if (Object.keys(usersMap).length > 0) {
-                document.getElementById('noUsersData').style.display = 'none';
-                Object.values(usersMap).forEach(user => {
+ 
+            const list = document.getElementById('myBookingsList');
+            list.innerHTML = '';
+ 
+            if (userBookings.length > 0) {
+                document.getElementById('noMyBookings').style.display = 'none';
+                userBookings.forEach(booking => {
                     const row = document.createElement('tr');
                     row.innerHTML = `
-                        <td>${user.name}</td>
-                        <td>${user.email}</td>
-                        <td>${user.bookings}</td>
-                        <td>${user.lastBooking ? new Date(user.lastBooking).toLocaleDateString() : '-'}</td>
-                        <td>
-                            <button onclick="alert('Contact: ' + '${user.email}')" class="btn-secondary" style="padding: 6px 12px; font-size: 12px;">View</button>
-                        </td>
+                        <td>${booking.packageName}</td>
+                        <td>${booking.categoryName || 'N/A'}</td>
+                        <td>${new Date(booking.eventDate).toLocaleDateString()}</td>
+                        <td>${new Date(booking.bookedAt).toLocaleDateString()}</td>
+                        <td><span class="status-badge status-${booking.status}">${booking.status}</span></td>
                     `;
-                    usersList.appendChild(row);
+                    list.appendChild(row);
                 });
             } else {
-                document.getElementById('noUsersData').style.display = 'block';
+                document.getElementById('noMyBookings').style.display = 'block';
             }
-
-            document.getElementById('totalUsers').textContent = Object.keys(usersMap).length;
         });
     }
-
-    function updateAdminDashboard() {
-        loadUsersData();
-    }
-
+ 
     // ===== TAB SWITCHING =====
     function switchTab(tabName) {
         document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
         document.getElementById(tabName).classList.add('active');
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         event.target.classList.add('active');
-    }
-
-    function switchAdminTab(tabName) {
-        document.querySelectorAll('#adminSection .tab-content').forEach(c => c.classList.remove('active'));
-        document.getElementById(tabName).classList.add('active');
-        document.querySelectorAll('#adminSection .tab-btn').forEach(b => b.classList.remove('active'));
-        event.target.classList.add('active');
-
-        if (tabName === 'users') {
-            loadUsersData();
+ 
+        if (tabName === 'myBookings') {
+            loadMyBookings();
         }
     }
-
+ 
     // ===== MESSAGES =====
     function showMessage(msg, type) {
         const msgEl = document.getElementById(type + 'Msg');
@@ -1671,10 +874,10 @@
         msgEl.classList.add('show');
         setTimeout(() => msgEl.classList.remove('show'), 4000);
     }
-
-    // ===== INITIALIZE =====
+ 
+    // Initialize
     checkAuth();
 </script>
-
+ 
 </body>
 </html>
