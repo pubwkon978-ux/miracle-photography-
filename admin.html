@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miracle Photography | Control Room</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body style="background-color: var(--bg-primary);">
+
+  <div id="admin-login-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background: #000; z-index:9999; display:flex; align-items:center; justify-content:center;">
+    <div class="glass-card" style="padding:40px; text-align:center; max-width:400px; width:90%;">
+      <h2 style="color:var(--accent); margin-bottom:20px;">Staff Gateway Authorization</h2>
+      <input type="email" id="adm-email" placeholder="Admin Registered Email" class="form-control" style="margin-bottom:15px;" required>
+      <input type="password" id="adm-pass" placeholder="System Security Password" class="form-control" style="margin-bottom:20px;" required>
+      <button id="btn-adm-login" class="btn-gold" style="width:100%;">Establish Authentication Profile</button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <aside class="sidebar">
+      <h2>Control Panel</h2>
+      <ul class="sidebar-menu">
+        <li><a class="nav-tab active" data-target="dash">Metrics Engine</a></li>
+        <li><a class="nav-tab" data-target="upload">Ingest Processing System</a></li>
+        <li><a class="nav-tab" data-target="vault">Library Vault Management</a></li>
+        <li><a class="nav-tab" data-target="schedule">Reservation Ledger</a></li>
+        <li><a class="nav-tab" data-target="config">Profile Config</a></li>
+        <li><button id="btn-adm-logout" style="width:100%; margin-top:40px; padding:10px;" class="btn-gold">Exit Context</button></li>
+      </ul>
+    </aside>
+
+    <main class="admin-main">
+      <section id="dash" class="admin-section active" style="padding:0;">
+        <h2 style="margin-bottom:30px;">System Status Metrics Ecosystem</h2>
+        <div class="stats-grid">
+          <div class="stat-card glass-card"><h3 id="stat-photos">0</h3><p>Total Photos</p></div>
+          <div class="stat-card glass-card"><h3 id="stat-categories">8</h3><p>Operational Classes</p></div>
+          <div class="stat-card glass-card"><h3 id="stat-bookings">0</h3><p>Active Appointments</p></div>
+        </div>
+      </section>
+
+      <section id="upload" class="admin-section" style="padding:0;">
+        <h2 style="margin-bottom:30px;">Media Pipeline Transmission Portal</h2>
+        <div class="glass-card" style="padding:30px; max-width:600px;">
+          <div class="form-group">
+            <label>Classification Target Context Group</label>
+            <select id="upl-category" class="form-control">
+              <option value="Wedding Photography">Wedding Photography</option>
+              <option value="Pre Shoot">Pre Shoot</option>
+              <option value="Birthday Events">Birthday Events</option>
+              <option value="Baby Photography">Baby Photography</option>
+              <option value="Fashion Photography">Fashion Photography</option>
+              <option value="Nature Photography">Nature Photography</option>
+              <option value="Commercial Photography">Commercial Photography</option>
+              <option value="Drone Photography">Drone Photography</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Select Compositions (Multiple Selection Validated)</label>
+            <input type="file" id="upl-files" class="form-control" multiple accept="image/*">
+          </div>
+          <button id="btn-trigger-upload" class="btn-gold" style="width:100%;">Initiate Cloudinary Pipeline Streaming</button>
+          <div id="upload-progress-log" style="margin-top:20px; color:var(--text-muted); font-size:0.85rem;"></div>
+        </div>
+      </section>
+
+      <section id="vault" class="admin-section" style="padding:0;">
+        <h2 style="margin-bottom:30px;">Vault Architecture Asset Management</h2>
+        <div class="admin-grid-view" id="vault-items-container"></div>
+      </section>
+
+      <section id="schedule" class="admin-section" style="padding:0;">
+        <h2 style="margin-bottom:30px;">Reservation Processing System</h2>
+        <div id="booking-cards-container"></div>
+      </section>
+
+      <section id="config" class="admin-section" style="padding:0;">
+        <h2 style="margin-bottom:30px;">System UI Variable Configurations</h2>
+        <form id="settings-mutation-form" class="glass-card" style="padding:30px; max-width:700px;">
+          <div class="form-group"><label>Hero Headline Banner Title text</label><input type="text" id="set-hero-title" class="form-control"></div>
+          <div class="form-group"><label>Hero Target Description Subtitle text</label><input type="text" id="set-hero-subtitle" class="form-control"></div>
+          <div class="form-group"><label>Primary Voice Communications Target Phone</label><input type="text" id="set-phone" class="form-control"></div>
+          <div class="form-group"><label>Primary Delivery Electronic Address Email</label><input type="email" id="set-email" class="form-control"></div>
+          <div class="form-group"><label>Facebook Profile Target URL</label><input type="url" id="set-fb" class="form-control"></div>
+          <div class="form-group"><label>Instagram Profile Target URL</label><input type="url" id="set-insta" class="form-control"></div>
+          <div class="form-group"><label>WhatsApp Direct Target Phone Extension Number</label><input type="text" id="set-wa" class="form-control"></div>
+          <div class="form-group"><label>Footer Layout Text String Context</label><input type="text" id="set-footer" class="form-control"></div>
+          <button type="submit" class="btn-gold" style="width:100%;">Mutate Platform Settings Objects</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>
