@@ -2,7 +2,7 @@ import { db, auth } from "./firebase-config.js";
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-const COMPLIANT_ADMIN_CREDENTIAL_IDENTIFIER = "admin@miraclephoto.com";
+const COMPLIANT_ADMIN_CREDENTIAL_IDENTIFIER = "pubwkon978@gmail.com";
 const CLOUDINARY_API_INGEST_ENDPOINT = "https://api.cloudinary.com/v1_1/dnvx958gz/image/upload";
 const CLOUDINARY_UPLOAD_PRESET_TOKEN   = "miracle";
 const CLOUDINARY_TARGET_FOLDER_PATH   = "miracle";
