@@ -3,50 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Miracle Photography | Control Room</title>
+  <title>Miracle Photography · Admin</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body style="background-color: var(--bg-primary);">
+<body class="admin-page">
 
-  <div id="admin-login-overlay" style="position:fixed; top:0; left:0; width:100%; height:100%; background: #000; z-index:9999; display:flex; align-items:center; justify-content:center;">
-    <div class="glass-card" style="padding:40px; text-align:center; max-width:400px; width:90%;">
-      <h2 style="color:var(--accent); margin-bottom:20px;">Staff Gateway Authorization</h2>
-      <input type="email" id="adm-email" value="pubwkon978@gmail.com" placeholder="Admin Registered Email" class="form-control" style="margin-bottom:15px;" required>
-      <input type="password" id="adm-pass" value="sahan123" placeholder="System Security Password" class="form-control" style="margin-bottom:20px;" required>
-      <button id="btn-adm-login" class="btn-gold" style="width:100%;">Establish Authentication Profile</button>
+  <!-- ═══ LOGIN OVERLAY ═══ -->
+  <div id="admin-login-overlay" class="adm-login-overlay">
+    <div class="adm-login-box glass-card">
+      <div class="adm-login-logo">MIRACLE<span>.</span></div>
+      <p class="adm-login-sub">Admin Control Panel</p>
+      <div class="form-group" style="margin-bottom:14px;">
+        <label style="font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:7px; display:block;">Email</label>
+        <input type="email" id="adm-email" class="form-control" placeholder="pubwkon978@gmail.com.com">
+      </div>
+      <div class="form-group" style="margin-bottom:24px;">
+        <label style="font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:7px; display:block;">Password</label>
+        <input type="password" id="adm-pass" class="form-control" placeholder="sahan123">
+      </div>
+      <button id="btn-adm-login" class="btn-gold" style="width:100%; padding:13px;">
+        <i class="fa fa-sign-in-alt" style="margin-right:8px;"></i>Sign In
+      </button>
     </div>
   </div>
 
-  <div class="admin-body">
-    <aside class="sidebar">
-      <h2>Control Panel</h2>
-      <ul class="sidebar-menu">
-        <li><a class="nav-tab active" data-target="dash">Metrics Engine</a></li>
-        <li><a class="nav-tab" data-target="upload">Ingest Processing System</a></li>
-        <li><a class="nav-tab" data-target="vault">Library Vault Management</a></li>
-        <li><a class="nav-tab" data-target="schedule">Reservation Ledger</a></li>
-        <li><a class="nav-tab" data-target="config">Profile Config</a></li>
-        <li><button id="btn-adm-logout" style="width:100%; margin-top:40px; padding:10px;" class="btn-gold">Exit Context</button></li>
-      </ul>
+  <!-- ═══ ADMIN BODY ═══ -->
+  <div class="adm-layout">
+
+    <!-- Sidebar -->
+    <aside class="adm-sidebar">
+      <div class="adm-sidebar-logo">MIRACLE<span>.</span></div>
+
+      <nav class="adm-nav">
+        <a class="adm-nav-link nav-tab active" data-target="dash">
+          <i class="fa fa-chart-bar"></i><span>Dashboard</span>
+        </a>
+        <a class="adm-nav-link nav-tab" data-target="upload">
+          <i class="fa fa-cloud-upload-alt"></i><span>Upload Photos</span>
+        </a>
+        <a class="adm-nav-link nav-tab" data-target="vault">
+          <i class="fa fa-images"></i><span>Photo Library</span>
+        </a>
+        <a class="adm-nav-link nav-tab" data-target="schedule">
+          <i class="fa fa-calendar-alt"></i><span>Bookings</span>
+          <span class="adm-badge" id="sidebar-pending-count" style="display:none;"></span>
+        </a>
+        <a class="adm-nav-link nav-tab" data-target="config">
+          <i class="fa fa-cog"></i><span>Settings</span>
+        </a>
+      </nav>
+
+      <div class="adm-sidebar-bottom">
+        <a href="index.html" class="adm-nav-link" target="_blank">
+          <i class="fa fa-external-link-alt"></i><span>View Website</span>
+        </a>
+        <button id="btn-adm-logout" class="adm-logout-btn">
+          <i class="fa fa-sign-out-alt"></i><span>Sign Out</span>
+        </button>
+      </div>
     </aside>
 
-    <main class="admin-main">
-      <section id="dash" class="admin-section active" style="padding:0;">
-        <h2 style="margin-bottom:30px;">System Status Metrics Ecosystem</h2>
-        <div class="stats-grid">
-          <div class="stat-card glass-card"><h3 id="stat-photos">0</h3><p>Total Photos</p></div>
-          <div class="stat-card glass-card"><h3 id="stat-categories">8</h3><p>Operational Classes</p></div>
-          <div class="stat-card glass-card"><h3 id="stat-bookings">0</h3><p>Active Appointments</p></div>
+    <!-- Main -->
+    <main class="adm-main">
+
+      <!-- ── DASHBOARD ── -->
+      <section id="dash" class="admin-section active">
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Dashboard</h1>
+            <p class="adm-page-sub">Studio overview at a glance</p>
+          </div>
+          <div class="adm-clock" id="adm-clock"></div>
         </div>
+
+        <div class="adm-stats-row">
+          <div class="adm-stat glass-card">
+            <div class="adm-stat-icon photos"><i class="fa fa-images"></i></div>
+            <div class="adm-stat-data">
+              <h3 id="stat-photos">0</h3>
+              <p>Total Photos</p>
+            </div>
+          </div>
+          <div class="adm-stat glass-card">
+            <div class="adm-stat-icon bookings"><i class="fa fa-calendar-check"></i></div>
+            <div class="adm-stat-data">
+              <h3 id="stat-bookings">0</h3>
+              <p>Total Bookings</p>
+            </div>
+          </div>
+          <div class="adm-stat glass-card">
+            <div class="adm-stat-icon pending"><i class="fa fa-clock"></i></div>
+            <div class="adm-stat-data">
+              <h3 id="stat-pending">0</h3>
+              <p>Pending</p>
+            </div>
+          </div>
+          <div class="adm-stat glass-card">
+            <div class="adm-stat-icon confirmed"><i class="fa fa-check-circle"></i></div>
+            <div class="adm-stat-data">
+              <h3 id="stat-confirmed">0</h3>
+              <p>Confirmed</p>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="adm-section-label">Recent Booking Requests</h3>
+        <div id="dash-recent-bookings"></div>
       </section>
 
-      <section id="upload" class="admin-section" style="padding:0;">
-        <h2 style="margin-bottom:30px;">Media Pipeline Transmission Portal</h2>
-        <div class="glass-card" style="padding:30px; max-width:600px;">
-          <div class="form-group">
-            <label>Classification Target Context Group</label>
+      <!-- ── UPLOAD ── -->
+      <section id="upload" class="admin-section">
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Upload Photos</h1>
+            <p class="adm-page-sub">Add new photos to your gallery</p>
+          </div>
+        </div>
+
+        <div class="adm-upload-panel glass-card">
+          <div class="form-group" style="max-width:400px;">
+            <label>Category</label>
             <select id="upl-category" class="form-control">
               <option value="Wedding Photography">Wedding Photography</option>
               <option value="Pre Shoot">Pre Shoot</option>
@@ -58,41 +136,130 @@
               <option value="Drone Photography">Drone Photography</option>
             </select>
           </div>
-          <div class="form-group">
-            <label>Select Compositions (Multiple Selection Validated)</label>
-            <input type="file" id="upl-files" class="form-control" multiple accept="image/*">
+
+          <div class="adm-dropzone" id="adm-dropzone">
+            <input type="file" id="upl-files" multiple accept="image/*" style="display:none;">
+            <div class="adm-dropzone-idle" id="adm-dropzone-idle">
+              <i class="fa fa-cloud-upload-alt"></i>
+              <p>Drag &amp; drop images here</p>
+              <span>or</span>
+              <button type="button" class="btn-outline" onclick="document.getElementById('upl-files').click()">Browse Files</button>
+            </div>
+            <div class="adm-preview-wrap" id="adm-preview-wrap" style="display:none;"></div>
           </div>
-          <button id="btn-trigger-upload" class="btn-gold" style="width:100%;">Initiate Cloudinary Pipeline Streaming</button>
-          <div id="upload-progress-log" style="margin-top:20px; color:var(--text-muted); font-size:0.85rem;"></div>
+
+          <button id="btn-trigger-upload" class="btn-gold" style="padding:13px 36px; margin-top:20px;">
+            <i class="fa fa-upload" style="margin-right:8px;"></i>Upload to Gallery
+          </button>
+          <div id="upload-progress-log" class="adm-upload-log"></div>
         </div>
       </section>
 
-      <section id="vault" class="admin-section" style="padding:0;">
-        <h2 style="margin-bottom:30px;">Vault Architecture Asset Management</h2>
-        <div class="admin-grid-view" id="vault-items-container"></div>
+      <!-- ── VAULT / LIBRARY ── -->
+      <section id="vault" class="admin-section">
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Photo Library</h1>
+            <p class="adm-page-sub">All uploaded photographs</p>
+          </div>
+          <button class="btn-outline" onclick="loadLibraryVault()">
+            <i class="fa fa-sync-alt" style="margin-right:6px;"></i>Refresh
+          </button>
+        </div>
+        <div class="adm-vault-grid" id="vault-items-container">
+          <div class="spinner"></div>
+        </div>
       </section>
 
-      <section id="schedule" class="admin-section" style="padding:0;">
-        <h2 style="margin-bottom:30px;">Reservation Processing System</h2>
+      <!-- ── BOOKINGS ── -->
+      <section id="schedule" class="admin-section">
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Booking Requests</h1>
+            <p class="adm-page-sub">Manage client reservations</p>
+          </div>
+          <div class="adm-filter-tabs">
+            <button class="adm-filter-btn active" data-filter="all">All</button>
+            <button class="adm-filter-btn" data-filter="Pending">Pending</button>
+            <button class="adm-filter-btn" data-filter="Confirmed">Confirmed</button>
+          </div>
+        </div>
         <div id="booking-cards-container"></div>
       </section>
 
-      <section id="config" class="admin-section" style="padding:0;">
-        <h2 style="margin-bottom:30px;">System UI Variable Configurations</h2>
-        <form id="settings-mutation-form" class="glass-card" style="padding:30px; max-width:700px;">
-          <div class="form-group"><label>Hero Headline Banner Title text</label><input type="text" id="set-hero-title" class="form-control"></div>
-          <div class="form-group"><label>Hero Target Description Subtitle text</label><input type="text" id="set-hero-subtitle" class="form-control"></div>
-          <div class="form-group"><label>Primary Voice Communications Target Phone</label><input type="text" id="set-phone" class="form-control"></div>
-          <div class="form-group"><label>Primary Delivery Electronic Address Email</label><input type="email" id="set-email" class="form-control"></div>
-          <div class="form-group"><label>Facebook Profile Target URL</label><input type="url" id="set-fb" class="form-control"></div>
-          <div class="form-group"><label>Instagram Profile Target URL</label><input type="url" id="set-insta" class="form-control"></div>
-          <div class="form-group"><label>WhatsApp Direct Target Phone Extension Number</label><input type="text" id="set-wa" class="form-control"></div>
-          <div class="form-group"><label>Footer Layout Text String Context</label><input type="text" id="set-footer" class="form-control"></div>
-          <button type="submit" class="btn-gold" style="width:100%;">Mutate Platform Settings Objects</button>
+      <!-- ── SETTINGS ── -->
+      <section id="config" class="admin-section">
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Site Settings</h1>
+            <p class="adm-page-sub">Configure your website content</p>
+          </div>
+        </div>
+
+        <form id="settings-mutation-form" class="adm-settings-form glass-card">
+
+          <div class="adm-settings-group-title">
+            <i class="fa fa-home"></i> Hero Section
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Main Title</label>
+              <input type="text" id="set-hero-title" class="form-control" placeholder="Miracle Photography">
+            </div>
+            <div class="form-group">
+              <label>Subtitle</label>
+              <input type="text" id="set-hero-subtitle" class="form-control" placeholder="Capture Your Beautiful Moments">
+            </div>
+          </div>
+
+          <div class="adm-settings-group-title">
+            <i class="fa fa-address-book"></i> Contact Details
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fa fa-phone" style="color:var(--accent); margin-right:6px;"></i>Phone</label>
+              <input type="text" id="set-phone" class="form-control" placeholder="+94 77 123 4567">
+            </div>
+            <div class="form-group">
+              <label><i class="fa fa-envelope" style="color:var(--accent); margin-right:6px;"></i>Email</label>
+              <input type="email" id="set-email" class="form-control" placeholder="info@miracle.com">
+            </div>
+          </div>
+
+          <div class="adm-settings-group-title">
+            <i class="fab fa-instagram"></i> Social Media
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label><i class="fab fa-facebook" style="color:#1877f2; margin-right:6px;"></i>Facebook URL</label>
+              <input type="url" id="set-fb" class="form-control" placeholder="https://facebook.com/...">
+            </div>
+            <div class="form-group">
+              <label><i class="fab fa-instagram" style="color:#e1306c; margin-right:6px;"></i>Instagram URL</label>
+              <input type="url" id="set-insta" class="form-control" placeholder="https://instagram.com/...">
+            </div>
+          </div>
+          <div class="form-group" style="max-width:420px;">
+            <label><i class="fab fa-whatsapp" style="color:#25d366; margin-right:6px;"></i>WhatsApp Number</label>
+            <input type="text" id="set-wa" class="form-control" placeholder="94771234567 (no + or spaces)">
+          </div>
+
+          <div class="adm-settings-group-title">
+            <i class="fa fa-align-center"></i> Footer
+          </div>
+          <div class="form-group">
+            <label>Footer Text</label>
+            <input type="text" id="set-footer" class="form-control" placeholder="© 2026 Miracle Photography. All Rights Reserved.">
+          </div>
+
+          <button type="submit" class="btn-gold" style="padding:13px 36px; margin-top:10px;">
+            <i class="fa fa-save" style="margin-right:8px;"></i>Save Settings
+          </button>
         </form>
       </section>
+
     </main>
-  </div>
+  </div><!-- end adm-layout -->
 
   <script type="module" src="admin.js"></script>
 </body>
