@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Miracle Photography | Capture Luxury</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ═══ HEADER ═══ -->
+  <header id="main-header">
+    <a href="#home" class="logo">MIRACLE<span>.</span></a>
+    <i class="fa fa-bars menu-toggle" id="menu-btn"></i>
+    <ul class="nav-links" id="nav-menu">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#categories">Collections</a></li>
+      <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#bookings">Bookings</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#bookings" class="nav-cta">Book Now</a></li>
+    </ul>
+  </header>
+
+  <!-- ═══ HERO ═══ -->
+  <section id="home" class="hero">
+    <video autoplay muted loop playsinline id="hero-video">
+      <source src="video.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow animate-fade-up">Luxury Photography Studio · Sri Lanka</p>
+      <h1 id="dyn-hero-title" class="hero-heading animate-fade-up anim-d1">Miracle Photography</h1>
+      <div class="hero-divider animate-fade-up anim-d2"></div>
+      <p id="dyn-hero-subtitle" class="hero-sub animate-fade-up anim-d2">Capture Your Beautiful Moments</p>
+      <div class="hero-actions animate-fade-up anim-d3">
+        <a href="#bookings" class="btn-gold">Book Your Session</a>
+        <a href="#gallery" class="btn-outline">View Portfolio</a>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ═══ STATS BAR ═══ -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <h3><span class="stat-num" data-target="8">0</span>+</h3>
+      <p>Years Experience</p>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-item">
+      <h3><span class="stat-num" data-target="500">0</span>+</h3>
+      <p>Happy Clients</p>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-item">
+      <h3><span class="stat-num" data-target="5000">0</span>+</h3>
+      <p>Photos Captured</p>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat-item">
+      <h3><span class="stat-num" data-target="8">0</span></h3>
+      <p>Specializations</p>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURED SLIDESHOW ═══ -->
+  <div class="slideshow-wrap">
+    <div class="slideshow-container glass-card" id="featured-slideshow">
+      <div class="slideshow-label">Featured Work</div>
+      <div class="spinner" id="slideshow-loader" style="position:absolute;top:45%;left:48%;"></div>
+    </div>
+    <div class="slideshow-dots" id="slideshow-dots"></div>
+  </div>
+
+  <!-- ═══ ABOUT / PHILOSOPHY ═══ -->
+  <section id="about" class="about-section">
+    <div class="about-inner">
+      <div class="about-text scroll-reveal">
+        <span class="section-eyebrow">Our Philosophy</span>
+        <h2 class="display-heading">Every Frame<br><em>Tells A Story</em></h2>
+        <p>At Miracle Photography, we believe the most powerful images are those that capture genuine emotion — the unscripted laugh, the quiet glance, the fleeting moment that becomes a lasting memory.</p>
+        <p style="margin-top:15px;">Based in Sri Lanka, our team brings artistry and technical excellence to every session, from intimate portraits to grand wedding celebrations.</p>
+        <a href="#categories" class="btn-gold" style="margin-top:35px; display:inline-block;">Explore Our Work</a>
+      </div>
+      <div class="about-image-wrap scroll-reveal anim-d1">
+        <img src="https://images.unsplash.com/photo-1502920514313-52581002a659?q=80&w=800&auto=format&fit=crop" alt="Miracle Photography Studio">
+        <div class="about-badge glass-card">
+          <i class="fa fa-camera"></i>
+          <span>Capturing Perfection Since 2016</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CATEGORIES ═══ -->
+  <section id="categories">
+    <div class="section-header scroll-reveal">
+      <span class="section-eyebrow">What We Offer</span>
+      <h2 class="section-title">Photography Collections</h2>
+    </div>
+    <div class="categories-grid" id="categories-container"></div>
+  </section>
+
+  <!-- ═══ GALLERY ═══ -->
+  <section id="gallery">
+    <div class="section-header scroll-reveal">
+      <span class="section-eyebrow">Our Portfolio</span>
+      <h2 class="section-title" id="gallery-title">All Photographs</h2>
+    </div>
+    <div class="gallery-filters" id="gallery-filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+    </div>
+    <div class="masonry-grid" id="gallery-container">
+      <div class="gallery-empty"><div class="spinner"></div></div>
+    </div>
+  </section>
+
+  <!-- ═══ BOOKINGS ═══ -->
+  <section id="bookings">
+    <div class="section-header scroll-reveal">
+      <span class="section-eyebrow">Reserve Your Date</span>
+      <h2 class="section-title">Schedule a Session</h2>
+    </div>
+    <div class="booking-layout">
+
+      <!-- Left: info panel -->
+      <div class="booking-info glass-card scroll-reveal">
+        <h3>Why Book With Us?</h3>
+        <ul class="booking-perks">
+          <li><i class="fa fa-check-circle"></i><span>Professional Editing Included</span></li>
+          <li><i class="fa fa-check-circle"></i><span>High-Resolution Digital Delivery</span></li>
+          <li><i class="fa fa-check-circle"></i><span>Multiple Location Options</span></li>
+          <li><i class="fa fa-check-circle"></i><span>Flexible Scheduling</span></li>
+          <li><i class="fa fa-check-circle"></i><span>24-Hour Response Guarantee</span></li>
+        </ul>
+        <div class="booking-quick-contact">
+          <p class="bqc-label">Quick Enquiry</p>
+          <p><i class="fa fa-phone"></i> <span id="bk-quick-phone">+94 77 123 4567</span></p>
+          <p><i class="fa fa-envelope"></i> <span id="bk-quick-email">info@miraclephoto.com</span></p>
+        </div>
+      </div>
+
+      <!-- Right: form -->
+      <div class="booking-wrapper glass-card scroll-reveal anim-d1">
+        <div id="auth-container" class="auth-panel">
+          <div class="auth-icon"><i class="fab fa-google"></i></div>
+          <h3>Sign In to Book</h3>
+          <p>Please sign in with Google to complete your booking reservation.</p>
+          <button id="btn-google-login" class="btn-gold"><i class="fab fa-google"></i> Continue with Google</button>
+        </div>
+
+        <form id="booking-form" style="display:none;">
+          <div class="booking-form-header">
+            <span id="user-welcome" class="user-welcome-text">Welcome</span>
+            <button type="button" id="btn-logout" class="btn-logout-mini">
+              <i class="fa fa-sign-out-alt"></i> Logout
+            </button>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Name</label>
+              <input type="text" id="bk-name" class="form-control" placeholder="Your full name" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number</label>
+              <input type="tel" id="bk-phone" class="form-control" placeholder="+94 XX XXX XXXX" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email Address</label>
+            <input type="email" id="bk-email" class="form-control" readonly required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>Event Type</label>
+              <select id="bk-type" class="form-control" required>
+                <option value="Wedding Photography">Wedding Photography</option>
+                <option value="Pre Shoot">Pre Shoot</option>
+                <option value="Birthday Events">Birthday Events</option>
+                <option value="Baby Photography">Baby Photography</option>
+                <option value="Fashion Photography">Fashion Photography</option>
+                <option value="Nature Photography">Nature Photography</option>
+                <option value="Commercial Photography">Commercial Photography</option>
+                <option value="Drone Photography">Drone Photography</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Event Date</label>
+              <input type="date" id="bk-date" class="form-control" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Location</label>
+            <input type="text" id="bk-location" class="form-control" placeholder="Event location" required>
+          </div>
+          <div class="form-group">
+            <label>Special Notes</label>
+            <textarea id="bk-notes" class="form-control" rows="3" placeholder="Any special requirements or requests..."></textarea>
+          </div>
+          <button type="submit" class="btn-gold btn-submit">
+            <i class="fa fa-calendar-check"></i> Submit Booking Request
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <div class="section-header scroll-reveal">
+      <span class="section-eyebrow">Reach Out</span>
+      <h2 class="section-title">Get In Touch</h2>
+    </div>
+    <div class="contact-container">
+      <div class="contact-details glass-card scroll-reveal">
+        <h3>Miracle Photography</h3>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa fa-phone"></i></div>
+          <div>
+            <span class="contact-label">Phone</span>
+            <p id="det-phone">+94 77 123 4567</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa fa-envelope"></i></div>
+          <div>
+            <span class="contact-label">Email</span>
+            <p id="det-email">info@miraclephoto.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon"><i class="fa fa-map-marker-alt"></i></div>
+          <div>
+            <span class="contact-label">Location</span>
+            <p>Colombo, Sri Lanka</p>
+          </div>
+        </div>
+        <div class="contact-socials" id="det-socials"></div>
+      </div>
+      <div class="map-container scroll-reveal anim-d1">
+        <iframe src="https://maps.google.com/maps?q=Colombo,SriLanka&t=&z=13&ie=UTF8&iwloc=&output=embed" allowfullscreen="" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ FOOTER ═══ -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo" style="font-size:1.3rem;">MIRACLE<span>.</span></div>
+        <p>Capturing life's most beautiful moments with artistry and elegance across Sri Lanka.</p>
+        <div id="footer-socials" class="footer-social-row"></div>
+      </div>
+      <div class="footer-links-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#categories">Collections</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#bookings">Book Now</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#categories">Wedding Photography</a></li>
+          <li><a href="#categories">Pre Shoot</a></li>
+          <li><a href="#categories">Birthday Events</a></li>
+          <li><a href="#categories">Baby Photography</a></li>
+          <li><a href="#categories">Drone Photography</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p id="dyn-footer-text">© 2026 Miracle Photography. All Rights Reserved.</p>
+      <a href="admin.html" style="color:var(--text-muted); font-size:0.75rem; opacity:0.4; text-decoration:none;">Admin</a>
+    </div>
+  </footer>
+
+  <!-- ═══ LIGHTBOX ═══ -->
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close" id="lightbox-close"><i class="fa fa-times"></i></button>
+    <button class="lightbox-nav-btn" id="lightbox-prev"><i class="fa fa-chevron-left"></i></button>
+    <button class="lightbox-nav-btn" id="lightbox-next"><i class="fa fa-chevron-right"></i></button>
+    <img id="lightbox-img" src="" alt="Preview">
+    <div class="lightbox-counter" id="lightbox-counter"></div>
+  </div>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
