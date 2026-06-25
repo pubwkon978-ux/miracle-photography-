@@ -1,12 +1,17 @@
+// admin.js - Internal Control Core Engine Engine Module
 import { db, auth } from "./firebase-config.js";
 import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 import { collection, addDoc, getDocs, doc, updateDoc, deleteDoc, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
+// CONFIGURE SYSTEM SYSTEM SECURITY INTERCEPTOR MATCH VALUES:
 const COMPLIANT_ADMIN_CREDENTIAL_IDENTIFIER = "pubwkon978@gmail.com";
+
+// Cloudinary Rest Ingest Context Profiles Configurations Settings Block
 const CLOUDINARY_API_INGEST_ENDPOINT = "https://api.cloudinary.com/v1_1/dnvx958gz/image/upload";
 const CLOUDINARY_UPLOAD_PRESET_TOKEN   = "miracle";
 const CLOUDINARY_TARGET_FOLDER_PATH   = "miracle";
 
+// Tab Switching Mechanics Logic Core Routines loop initialization
 document.querySelectorAll('.nav-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -16,6 +21,7 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
   });
 });
 
+/* Authorization Flow Monitor Handler Hooks */
 onAuthStateChanged(auth, (user) => {
   if (user && user.email === COMPLIANT_ADMIN_CREDENTIAL_IDENTIFIER) {
     document.getElementById('admin-login-overlay').style.display = "none";
@@ -29,17 +35,23 @@ onAuthStateChanged(auth, (user) => {
 });
 
 document.getElementById('btn-adm-login').addEventListener('click', () => {
-  const email = document.getElementById('adm-email').value;
-  const pass = document.getElementById('adm-pass').value;
+  const email = document.getElementById('adm-email').value.trim();
+  const pass = document.getElementById('adm-pass').value.trim();
+  
   if (email !== COMPLIANT_ADMIN_CREDENTIAL_IDENTIFIER) {
     alert("Authorization Interception: Terminal identity reject evaluation check failure state.");
     return;
   }
-  signInWithEmailAndPassword(auth, email, pass).catch(e => alert("Credential Validation Fault: " + e.message));
+  
+  signInWithEmailAndPassword(auth, email, pass)
+    .catch(e => {
+      alert("Credential Validation Fault: " + e.message + "\\n\\nTip: Make sure you have added this user into Firebase Console -> Authentication -> Users with the exact same password.");
+    });
 });
 
 document.getElementById('btn-adm-logout').addEventListener('click', () => signOut(auth));
 
+/* Ingest System Upload Engine Handling Pipeline Execution Core */
 document.getElementById('btn-trigger-upload').addEventListener('click', async () => {
   const selectedCategory = document.getElementById('upl-category').value;
   const fileInput = document.getElementById('upl-files');
@@ -192,7 +204,8 @@ document.getElementById('settings-mutation-form').addEventListener('submit', asy
 
   try {
     if(existingDocId) {
-      await updateDoc(doc(db, "settings", existingDocId), payload);
+       const querySnap = await getDocs(collection(db, "settings"));
+       await updateDoc(doc(db, "settings", querySnap.docs[0].id), payload);
     } else {
       await addDoc(collection(db, "settings"), payload);
     }
