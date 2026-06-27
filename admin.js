@@ -402,3 +402,312 @@ function formatDateTime(s) {
   try { return new Date(s).toLocaleString('en-GB', { day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' }); }
   catch { return s; }
 }
+
+// ════════════════════════════════════════════════
+// MY PACKAGES MODULE
+// ════════════════════════════════════════════════
+
+// ── Package Admin Sub-tabs ──────────────────────
+document.querySelectorAll('.pkg-admin-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.pkg-admin-tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.pkg-admin-panel').forEach(p => p.style.display = 'none');
+    tab.classList.add('active');
+    const panel = document.getElementById(tab.getAttribute('data-pkg-tab'));
+    if (panel) panel.style.display = 'block';
+  });
+});
+
+// ── Default Excel Data ──────────────────────────
+const EXCEL_DEFAULTS = [
+  { name: "2 Pre-Shoot Dresses (Package)",    unitPrice: 18000, unitLabel: "set",     defaultQty: 1,   minQty: 0, active: true, order: 1 },
+  { name: "Additional Pre-Shoot Dress",        unitPrice: 10000, unitLabel: "dress",   defaultQty: 0,   minQty: 0, active: true, order: 2 },
+  { name: "Thank You Card",                    unitPrice: 150,   unitLabel: "card",    defaultQty: 150, minQty: 0, active: true, order: 3 },
+  { name: "Morning Shoot",                     unitPrice: 40000, unitLabel: "session", defaultQty: 1,   minQty: 0, active: true, order: 4 },
+  { name: "Function Covering",                 unitPrice: 0,     unitLabel: "event",   defaultQty: 1,   minQty: 0, active: true, order: 5 },
+  { name: "Evening Shoot",                     unitPrice: 0,     unitLabel: "session", defaultQty: 1,   minQty: 0, active: true, order: 6 },
+  { name: "16x24 Enlargement Print",           unitPrice: 10000, unitLabel: "piece",   defaultQty: 1,   minQty: 0, active: true, order: 7 },
+  { name: "Second Day Shoot",                  unitPrice: 15000, unitLabel: "session", defaultQty: 1,   minQty: 0, active: true, order: 8 },
+];
+
+document.getElementById('btn-load-defaults')?.addEventListener('click', async () => {
+  if (!confirm('This will add the Excel price items to your price list. Continue?')) return;
+  const btn = document.getElementById('btn-load-defaults');
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Loading...';
+  btn.disabled = true;
+  try {
+    for (const item of EXCEL_DEFAULTS) {
+      await addDoc(collection(db, "pricelist"), { ...item, createdAt: new Date().toISOString() });
+    }
+    btn.innerHTML = '<i class="fa fa-check"></i> Loaded!';
+    loadPriceItems();
+    setTimeout(() => { btn.innerHTML = '<i class="fa fa-download"></i> Load Excel Defaults'; btn.disabled = false; }, 2000);
+  } catch (err) {
+    btn.innerHTML = '<i class="fa fa-download"></i> Load Excel Defaults';
+    btn.disabled = false;
+    alert("Error: " + err.message);
+  }
+});
+
+// ══ PACKAGES CRUD ═══════════════════════════════
+
+async function loadAdminPackages() {
+  const listEl = document.getElementById('pkg-cards-list');
+  if (!listEl) return;
+  listEl.innerHTML = '<div class="spinner"></div>';
+  try {
+    const q    = query(collection(db, "packages"), orderBy("order", "asc"));
+    const snap = await getDocs(q);
+    listEl.innerHTML = '';
+    if (snap.empty) {
+      listEl.innerHTML = '<p class="adm-empty">No packages yet. Add your first package above.</p>';
+      return;
+    }
+    snap.forEach(ds => {
+      const pkg  = ds.data();
+      const card = document.createElement('div');
+      card.className = 'adm-pkg-row glass-card';
+      card.innerHTML = `
+        <div class="adm-pkg-row-info">
+          <div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            ${pkg.highlighted ? '<span class="adm-status-tag tag-confirmed" style="font-size:0.62rem;">★ Popular</span>' : ''}
+            <strong style="font-size:1rem; color:var(--text-main);">${pkg.name}</strong>
+            <span style="font-size:0.75rem; color:var(--text-muted);">${pkg.category}</span>
+            ${!pkg.active ? '<span class="adm-status-tag" style="background:rgba(200,0,0,0.12);color:#e05050;border-color:rgba(200,0,0,0.2);font-size:0.62rem;">Hidden</span>' : ''}
+          </div>
+          <div class="adm-pkg-price-row">
+            ${pkg.offerPrice && pkg.offerPrice < pkg.normalPrice
+              ? `<del style="color:var(--text-muted); font-size:0.85rem;">Rs. ${Number(pkg.normalPrice).toLocaleString()}</del>
+                 <span style="color:var(--accent); font-weight:700; font-size:1rem; margin-left:8px;">Rs. ${Number(pkg.offerPrice).toLocaleString()}</span>
+                 <span class="pkg-offer-badge" style="font-size:0.6rem; margin-left:6px;">OFFER</span>`
+              : `<span style="color:var(--text-main); font-size:1rem;">Rs. ${Number(pkg.normalPrice).toLocaleString()}</span>`
+            }
+          </div>
+        </div>
+        <div class="adm-pkg-row-actions">
+          <button class="adm-action-btn adm-confirm-btn edit-pkg-btn" data-id="${ds.id}"><i class="fa fa-edit"></i> Edit</button>
+          <button class="adm-action-btn adm-delete-btn del-pkg-btn" data-id="${ds.id}"><i class="fa fa-trash"></i></button>
+        </div>
+      `;
+      card.querySelector('.edit-pkg-btn').addEventListener('click', () => openEditPackage(ds.id, pkg));
+      card.querySelector('.del-pkg-btn').addEventListener('click', async () => {
+        if (confirm(`Delete package "${pkg.name}"?`)) {
+          await deleteDoc(doc(db, "packages", ds.id));
+          card.remove();
+        }
+      });
+      listEl.appendChild(card);
+    });
+  } catch (err) {
+    listEl.innerHTML = '<p class="adm-empty adm-error">Cannot load packages.</p>';
+  }
+}
+
+function openEditPackage(id, pkg) {
+  document.getElementById('pkg-edit-id').value         = id;
+  document.getElementById('pkg-form-title').textContent = 'Edit Package';
+  document.getElementById('pkg-name').value             = pkg.name || '';
+  document.getElementById('pkg-category').value         = pkg.category || 'Wedding Photography';
+  document.getElementById('pkg-desc').value             = pkg.description || '';
+  document.getElementById('pkg-includes').value         = (pkg.includes || []).join('\n');
+  document.getElementById('pkg-normal-price').value     = pkg.normalPrice || '';
+  document.getElementById('pkg-offer-price').value      = pkg.offerPrice || '';
+  document.getElementById('pkg-order').value            = pkg.order || 1;
+  document.getElementById('pkg-highlighted').checked    = !!pkg.highlighted;
+  document.getElementById('pkg-active').checked         = pkg.active !== false;
+  document.getElementById('pkg-form-wrap').style.display = 'block';
+  document.getElementById('pkg-form-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function resetPkgForm() {
+  ['pkg-edit-id','pkg-name','pkg-desc','pkg-includes','pkg-normal-price','pkg-offer-price'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  document.getElementById('pkg-form-title').textContent  = 'Add New Package';
+  document.getElementById('pkg-order').value             = 1;
+  document.getElementById('pkg-highlighted').checked     = false;
+  document.getElementById('pkg-active').checked          = true;
+  document.getElementById('pkg-form-wrap').style.display = 'none';
+}
+
+document.getElementById('btn-show-add-pkg')?.addEventListener('click', () => {
+  resetPkgForm();
+  document.getElementById('pkg-form-wrap').style.display = 'block';
+  document.getElementById('pkg-form-wrap').scrollIntoView({ behavior: 'smooth' });
+});
+document.getElementById('btn-cancel-pkg')?.addEventListener('click', resetPkgForm);
+
+document.getElementById('btn-save-pkg')?.addEventListener('click', async () => {
+  const name        = document.getElementById('pkg-name').value.trim();
+  const normalPrice = parseFloat(document.getElementById('pkg-normal-price').value);
+  if (!name || isNaN(normalPrice)) { alert('Package name and normal price are required.'); return; }
+
+  const btn     = document.getElementById('btn-save-pkg');
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
+  btn.disabled  = true;
+
+  const includesRaw = document.getElementById('pkg-includes').value;
+  const includes    = includesRaw.split('\n').map(s => s.trim()).filter(Boolean);
+  const offerRaw    = document.getElementById('pkg-offer-price').value;
+  const offerPrice  = offerRaw ? parseFloat(offerRaw) : null;
+
+  const payload = {
+    name,
+    category:    document.getElementById('pkg-category').value,
+    description: document.getElementById('pkg-desc').value.trim(),
+    includes,
+    normalPrice,
+    offerPrice,
+    highlighted: document.getElementById('pkg-highlighted').checked,
+    active:      document.getElementById('pkg-active').checked,
+    order:       parseInt(document.getElementById('pkg-order').value) || 1,
+    updatedAt:   new Date().toISOString(),
+  };
+
+  try {
+    const editId = document.getElementById('pkg-edit-id').value;
+    if (editId) {
+      await updateDoc(doc(db, "packages", editId), payload);
+    } else {
+      payload.createdAt = new Date().toISOString();
+      await addDoc(collection(db, "packages"), payload);
+    }
+    btn.innerHTML = '<i class="fa fa-check"></i> Saved!';
+    setTimeout(() => { btn.innerHTML = '<i class="fa fa-save"></i> Save Package'; btn.disabled = false; }, 1500);
+    resetPkgForm();
+    loadAdminPackages();
+  } catch (err) {
+    btn.innerHTML = '<i class="fa fa-save"></i> Save Package';
+    btn.disabled  = false;
+    alert("Save failed: " + err.message);
+  }
+});
+
+// ══ PRICE LIST CRUD ══════════════════════════════
+
+async function loadPriceItems() {
+  const tbody = document.getElementById('price-items-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:var(--text-muted);">Loading...</td></tr>';
+  try {
+    const q    = query(collection(db, "pricelist"), orderBy("order", "asc"));
+    const snap = await getDocs(q);
+    tbody.innerHTML = '';
+    if (snap.empty) {
+      tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">No items yet. Click "Load Excel Defaults" or "Add Item".</td></tr>';
+      return;
+    }
+    snap.forEach(ds => {
+      const d  = ds.data();
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${d.order || '—'}</td>
+        <td><strong>${d.name}</strong></td>
+        <td>Rs. ${Number(d.unitPrice).toLocaleString()}</td>
+        <td>${d.unitLabel || '—'}</td>
+        <td>${d.defaultQty ?? '—'}</td>
+        <td>
+          <span class="adm-status-tag ${d.active ? 'tag-confirmed' : ''}" style="${!d.active ? 'background:rgba(200,0,0,0.1);color:#e05050;border-color:rgba(200,0,0,0.2);' : ''}">
+            ${d.active ? 'Active' : 'Hidden'}
+          </span>
+        </td>
+        <td>
+          <div style="display:flex; gap:8px;">
+            <button class="adm-action-btn adm-confirm-btn edit-item-btn" style="padding:6px 12px; font-size:0.75rem;" data-id="${ds.id}"><i class="fa fa-edit"></i></button>
+            <button class="adm-action-btn adm-delete-btn del-item-btn" style="padding:6px 12px; font-size:0.75rem;" data-id="${ds.id}"><i class="fa fa-trash"></i></button>
+          </div>
+        </td>
+      `;
+      tr.querySelector('.edit-item-btn').addEventListener('click', () => openEditItem(ds.id, d));
+      tr.querySelector('.del-item-btn').addEventListener('click', async () => {
+        if (confirm(`Delete "${d.name}"?`)) {
+          await deleteDoc(doc(db, "pricelist", ds.id));
+          tr.remove();
+        }
+      });
+      tbody.appendChild(tr);
+    });
+  } catch (err) {
+    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center; padding:20px; color:#e05050;">Cannot load items — check Firestore rules.</td></tr>';
+  }
+}
+
+function openEditItem(id, d) {
+  document.getElementById('item-edit-id').value          = id;
+  document.getElementById('item-form-title').textContent = 'Edit Item';
+  document.getElementById('item-name').value             = d.name || '';
+  document.getElementById('item-unit-label').value       = d.unitLabel || '';
+  document.getElementById('item-unit-price').value       = d.unitPrice ?? '';
+  document.getElementById('item-default-qty').value      = d.defaultQty ?? 1;
+  document.getElementById('item-min-qty').value          = d.minQty ?? 0;
+  document.getElementById('item-order').value            = d.order ?? 1;
+  document.getElementById('item-active').checked         = d.active !== false;
+  document.getElementById('item-form-wrap').style.display = 'block';
+  document.getElementById('item-form-wrap').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function resetItemForm() {
+  ['item-edit-id','item-name','item-unit-label','item-unit-price'].forEach(id => { document.getElementById(id).value = ''; });
+  document.getElementById('item-form-title').textContent   = 'Add Price Item';
+  document.getElementById('item-default-qty').value        = 1;
+  document.getElementById('item-min-qty').value            = 0;
+  document.getElementById('item-order').value              = 1;
+  document.getElementById('item-active').checked           = true;
+  document.getElementById('item-form-wrap').style.display  = 'none';
+}
+
+document.getElementById('btn-show-add-item')?.addEventListener('click', () => {
+  resetItemForm();
+  document.getElementById('item-form-wrap').style.display = 'block';
+  document.getElementById('item-form-wrap').scrollIntoView({ behavior:'smooth' });
+});
+document.getElementById('btn-cancel-item')?.addEventListener('click', resetItemForm);
+
+document.getElementById('btn-save-item')?.addEventListener('click', async () => {
+  const name      = document.getElementById('item-name').value.trim();
+  const unitPrice = parseFloat(document.getElementById('item-unit-price').value);
+  if (!name || isNaN(unitPrice)) { alert('Item name and unit price are required.'); return; }
+
+  const btn     = document.getElementById('btn-save-item');
+  btn.innerHTML = '<i class="fa fa-spinner fa-spin"></i> Saving...';
+  btn.disabled  = true;
+
+  const payload = {
+    name,
+    unitLabel:  document.getElementById('item-unit-label').value.trim(),
+    unitPrice,
+    defaultQty: parseInt(document.getElementById('item-default-qty').value) || 0,
+    minQty:     parseInt(document.getElementById('item-min-qty').value)     || 0,
+    order:      parseInt(document.getElementById('item-order').value)       || 1,
+    active:     document.getElementById('item-active').checked,
+    updatedAt:  new Date().toISOString(),
+  };
+
+  try {
+    const editId = document.getElementById('item-edit-id').value;
+    if (editId) {
+      await updateDoc(doc(db, "pricelist", editId), payload);
+    } else {
+      payload.createdAt = new Date().toISOString();
+      await addDoc(collection(db, "pricelist"), payload);
+    }
+    btn.innerHTML = '<i class="fa fa-check"></i> Saved!';
+    setTimeout(() => { btn.innerHTML = '<i class="fa fa-save"></i> Save Item'; btn.disabled = false; }, 1500);
+    resetItemForm();
+    loadPriceItems();
+  } catch (err) {
+    btn.innerHTML = '<i class="fa fa-save"></i> Save Item';
+    btn.disabled  = false;
+    alert("Save failed: " + err.message);
+  }
+});
+
+// ── Load packages when Packages tab is activated ──
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  if (tab.getAttribute('data-target') === 'packages') {
+    tab.addEventListener('click', () => {
+      loadAdminPackages();
+      loadPriceItems();
+    });
+  }
+});
