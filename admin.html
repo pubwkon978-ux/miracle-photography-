@@ -17,11 +17,11 @@
       <p class="adm-login-sub">Admin Control Panel</p>
       <div class="form-group" style="margin-bottom:14px;">
         <label style="font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:7px; display:block;">Email</label>
-        <input type="email" id="adm-email" class="form-control" placeholder="pubwkon978@gmail.com.com">
+        <input type="email" id="adm-email" class="form-control" placeholder="admin@email.com">
       </div>
       <div class="form-group" style="margin-bottom:24px;">
         <label style="font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-muted); margin-bottom:7px; display:block;">Password</label>
-        <input type="password" id="adm-pass" class="form-control" placeholder="sahan123">
+        <input type="password" id="adm-pass" class="form-control" placeholder="••••••••">
       </div>
       <button id="btn-adm-login" class="btn-gold" style="width:100%; padding:13px;">
         <i class="fa fa-sign-in-alt" style="margin-right:8px;"></i>Sign In
@@ -49,6 +49,9 @@
         <a class="adm-nav-link nav-tab" data-target="schedule">
           <i class="fa fa-calendar-alt"></i><span>Bookings</span>
           <span class="adm-badge" id="sidebar-pending-count" style="display:none;"></span>
+        </a>
+        <a class="adm-nav-link nav-tab" data-target="packages">
+          <i class="fa fa-tags"></i><span>My Packages</span>
         </a>
         <a class="adm-nav-link nav-tab" data-target="config">
           <i class="fa fa-cog"></i><span>Settings</span>
@@ -185,6 +188,177 @@
           </div>
         </div>
         <div id="booking-cards-container"></div>
+      </section>
+
+      <!-- ── MY PACKAGES ── -->
+      <section id="packages" class="admin-section">
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">My Packages</h1>
+            <p class="adm-page-sub">Manage packages and the price calculator</p>
+          </div>
+        </div>
+
+        <!-- Sub-tabs -->
+        <div class="pkg-admin-tabs">
+          <button class="pkg-admin-tab active" data-pkg-tab="pkg-cards-panel">Package Cards</button>
+          <button class="pkg-admin-tab" data-pkg-tab="pkg-pricelist-panel">Price Calculator Items</button>
+        </div>
+
+        <!-- ── Panel 1: Package Cards ── -->
+        <div id="pkg-cards-panel" class="pkg-admin-panel">
+          <div class="pkg-admin-panel-header">
+            <h3>Package Cards <span style="color:var(--text-muted); font-size:0.8rem; font-weight:400;">(shown on website)</span></h3>
+            <button class="btn-gold" id="btn-show-add-pkg" style="padding:8px 20px; font-size:0.8rem;">
+              <i class="fa fa-plus"></i> Add Package
+            </button>
+          </div>
+
+          <!-- Add / Edit Package Form -->
+          <div class="pkg-form-wrap glass-card" id="pkg-form-wrap" style="display:none;">
+            <h4 id="pkg-form-title">Add New Package</h4>
+            <input type="hidden" id="pkg-edit-id">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Package Name</label>
+                <input type="text" id="pkg-name" class="form-control" placeholder="e.g. Wedding Standard Package">
+              </div>
+              <div class="form-group">
+                <label>Category</label>
+                <select id="pkg-category" class="form-control">
+                  <option value="Wedding Photography">Wedding Photography</option>
+                  <option value="Pre Shoot">Pre Shoot</option>
+                  <option value="Birthday Events">Birthday Events</option>
+                  <option value="Baby Photography">Baby Photography</option>
+                  <option value="Fashion Photography">Fashion Photography</option>
+                  <option value="Nature Photography">Nature Photography</option>
+                  <option value="Commercial Photography">Commercial Photography</option>
+                  <option value="Drone Photography">Drone Photography</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Short Description</label>
+              <input type="text" id="pkg-desc" class="form-control" placeholder="Brief description of this package">
+            </div>
+            <div class="form-group">
+              <label>Included Items <span style="color:var(--text-muted); font-size:0.75rem;">(one item per line)</span></label>
+              <textarea id="pkg-includes" class="form-control" rows="6" placeholder="2 Pre-Shoot Dresses&#10;Morning Shoot&#10;150 Thank You Cards&#10;16x24 Enlargement&#10;Second Day Shoot"></textarea>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Normal Price (Rs.)</label>
+                <input type="number" id="pkg-normal-price" class="form-control" placeholder="125500" min="0">
+              </div>
+              <div class="form-group">
+                <label>Offer Price (Rs.) <span style="color:var(--text-muted); font-size:0.75rem;">— leave blank if no offer</span></label>
+                <input type="number" id="pkg-offer-price" class="form-control" placeholder="Optional — e.g. 110000" min="0">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" id="pkg-order" class="form-control" value="1" min="1">
+              </div>
+              <div class="form-group" style="display:flex; flex-direction:column; justify-content:flex-end; gap:10px; padding-bottom:4px;">
+                <label class="pkg-toggle-label">
+                  <input type="checkbox" id="pkg-highlighted">
+                  <span>Mark as "Most Popular"</span>
+                </label>
+                <label class="pkg-toggle-label">
+                  <input type="checkbox" id="pkg-active" checked>
+                  <span>Active (visible on site)</span>
+                </label>
+              </div>
+            </div>
+            <div class="pkg-form-actions">
+              <button class="btn-gold" id="btn-save-pkg" style="padding:11px 28px;"><i class="fa fa-save"></i> Save Package</button>
+              <button class="btn-outline" id="btn-cancel-pkg" style="padding:11px 22px;">Cancel</button>
+            </div>
+          </div>
+
+          <!-- Package List -->
+          <div id="pkg-cards-list"></div>
+        </div>
+
+        <!-- ── Panel 2: Price Calculator Items ── -->
+        <div id="pkg-pricelist-panel" class="pkg-admin-panel" style="display:none;">
+          <div class="pkg-admin-panel-header">
+            <h3>Price Calculator Items <span style="color:var(--text-muted); font-size:0.8rem; font-weight:400;">(custom calculator on website)</span></h3>
+            <div style="display:flex; gap:10px;">
+              <button class="btn-outline" id="btn-load-defaults" style="padding:8px 18px; font-size:0.8rem;">
+                <i class="fa fa-download"></i> Load Excel Defaults
+              </button>
+              <button class="btn-gold" id="btn-show-add-item" style="padding:8px 20px; font-size:0.8rem;">
+                <i class="fa fa-plus"></i> Add Item
+              </button>
+            </div>
+          </div>
+
+          <!-- Add / Edit Item Form -->
+          <div class="pkg-form-wrap glass-card" id="item-form-wrap" style="display:none;">
+            <h4 id="item-form-title">Add Price Item</h4>
+            <input type="hidden" id="item-edit-id">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Item Name</label>
+                <input type="text" id="item-name" class="form-control" placeholder="e.g. Morning Shoot">
+              </div>
+              <div class="form-group">
+                <label>Unit Label</label>
+                <input type="text" id="item-unit-label" class="form-control" placeholder="e.g. session, dress, card">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Unit Price (Rs.)</label>
+                <input type="number" id="item-unit-price" class="form-control" placeholder="40000" min="0">
+              </div>
+              <div class="form-group">
+                <label>Default Quantity</label>
+                <input type="number" id="item-default-qty" class="form-control" value="1" min="0">
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Minimum Quantity</label>
+                <input type="number" id="item-min-qty" class="form-control" value="0" min="0">
+              </div>
+              <div class="form-group">
+                <label>Display Order</label>
+                <input type="number" id="item-order" class="form-control" value="1" min="1">
+              </div>
+            </div>
+            <label class="pkg-toggle-label" style="margin-bottom:16px;">
+              <input type="checkbox" id="item-active" checked>
+              <span>Active (visible in calculator)</span>
+            </label>
+            <div class="pkg-form-actions">
+              <button class="btn-gold" id="btn-save-item" style="padding:11px 28px;"><i class="fa fa-save"></i> Save Item</button>
+              <button class="btn-outline" id="btn-cancel-item" style="padding:11px 22px;">Cancel</button>
+            </div>
+          </div>
+
+          <!-- Items Table -->
+          <div class="adm-price-table-wrap glass-card">
+            <table class="adm-price-table" id="price-items-table">
+              <thead>
+                <tr>
+                  <th>Order</th>
+                  <th>Item Name</th>
+                  <th>Unit Price</th>
+                  <th>Unit</th>
+                  <th>Default Qty</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="price-items-tbody">
+                <tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">Loading...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </section>
 
       <!-- ── SETTINGS ── -->
