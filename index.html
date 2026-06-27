@@ -18,6 +18,7 @@
       <li><a href="#home">Home</a></li>
       <li><a href="#categories">Collections</a></li>
       <li><a href="#gallery">Gallery</a></li>
+      <li><a href="#pricing">Packages</a></li>
       <li><a href="#bookings">Bookings</a></li>
       <li><a href="#contact">Contact</a></li>
       <li><a href="#bookings" class="nav-cta">Book Now</a></li>
@@ -207,6 +208,50 @@
             <i class="fa fa-calendar-check"></i> Submit Booking Request
           </button>
         </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PACKAGES & PRICING ═══ -->
+  <section id="pricing">
+    <div class="section-header scroll-reveal">
+      <span class="section-eyebrow">Investment</span>
+      <h2 class="section-title">Packages &amp; Pricing</h2>
+    </div>
+
+    <!-- Package Cards -->
+    <div class="packages-grid" id="packages-container">
+      <div style="grid-column:1/-1; text-align:center; padding:40px;"><div class="spinner"></div></div>
+    </div>
+
+    <!-- Custom Price Calculator -->
+    <div class="calc-section scroll-reveal">
+      <div class="calc-header">
+        <div>
+          <span class="section-eyebrow">Build Your Own</span>
+          <h3 class="calc-title">Custom Price Calculator</h3>
+          <p class="calc-sub">Select what you need — see your estimated total instantly</p>
+        </div>
+      </div>
+      <div class="calc-wrap glass-card">
+        <div class="calc-table-head">
+          <span>Service</span>
+          <span>Unit Price</span>
+          <span>Quantity</span>
+          <span>Total</span>
+        </div>
+        <div class="calc-items-list" id="calc-items-list">
+          <div class="spinner"></div>
+        </div>
+        <div class="calc-footer">
+          <div class="calc-total-row">
+            <span>Estimated Total</span>
+            <span class="calc-grand-total" id="calc-grand-total">Rs. 0</span>
+          </div>
+          <a href="#bookings" class="btn-gold calc-book-btn">
+            <i class="fa fa-calendar-check"></i> Request Custom Booking
+          </a>
+        </div>
       </div>
     </div>
   </section>
