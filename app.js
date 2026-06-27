@@ -428,3 +428,138 @@ renderCategoryDeck();
 renderGalleryFilters();
 fetchPortfolioGallery();
 initSlideshowCarousel();
+loadPackages();
+loadPriceCalculator();
+
+// ── Packages ─────────────────────────────────────────
+async function loadPackages() {
+  const container = document.getElementById('packages-container');
+  if (!container) return;
+  try {
+    const q    = query(collection(db, "packages"), orderBy("order", "asc"));
+    const snap = await getDocs(q);
+    container.innerHTML = '';
+
+    if (snap.empty) {
+      container.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">
+        Packages coming soon. <a href="#contact" style="color:var(--accent);">Contact us</a> for pricing details.
+      </p>`;
+      return;
+    }
+
+    snap.forEach(ds => {
+      const pkg = ds.data();
+      if (!pkg.active) return;
+      const card = document.createElement('div');
+      card.className = `pkg-card glass-card${pkg.highlighted ? ' pkg-highlighted' : ''}`;
+
+      const includesList = (pkg.includes || [])
+        .map(item => `<li><i class="fa fa-check"></i><span>${item}</span></li>`)
+        .join('');
+
+      let priceHtml = '';
+      if (pkg.offerPrice && pkg.offerPrice < pkg.normalPrice) {
+        priceHtml = `
+          <div class="pkg-price-wrap">
+            <div class="pkg-was-price">
+              <del>Rs. ${Number(pkg.normalPrice).toLocaleString()}</del>
+            </div>
+            <div class="pkg-offer-price">
+              Rs. ${Number(pkg.offerPrice).toLocaleString()}
+              <span class="pkg-offer-badge">OFFER</span>
+            </div>
+          </div>`;
+      } else {
+        priceHtml = `
+          <div class="pkg-price-wrap">
+            <div class="pkg-normal-price">Rs. ${Number(pkg.normalPrice).toLocaleString()}</div>
+          </div>`;
+      }
+
+      card.innerHTML = `
+        ${pkg.highlighted ? '<div class="pkg-popular-tag">Most Popular</div>' : ''}
+        <div class="pkg-category-label">${pkg.category || ''}</div>
+        <h3 class="pkg-name">${pkg.name}</h3>
+        ${pkg.description ? `<p class="pkg-desc">${pkg.description}</p>` : ''}
+        <ul class="pkg-includes">${includesList}</ul>
+        ${priceHtml}
+        <a href="#bookings" class="btn-gold pkg-cta-btn">Book This Package</a>
+      `;
+      container.appendChild(card);
+    });
+  } catch (err) {
+    console.warn("Packages load error:", err);
+    container.innerHTML = `<p style="grid-column:1/-1; text-align:center; color:var(--text-muted); padding:40px 0;">
+      <a href="#contact" style="color:var(--accent);">Contact us</a> for current pricing.
+    </p>`;
+  }
+}
+
+// ── Price Calculator ──────────────────────────────────
+async function loadPriceCalculator() {
+  const listEl = document.getElementById('calc-items-list');
+  if (!listEl) return;
+  try {
+    const q    = query(collection(db, "pricelist"), orderBy("order", "asc"));
+    const snap = await getDocs(q);
+    listEl.innerHTML = '';
+
+    if (snap.empty) {
+      listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px;">Price list coming soon.</p>`;
+      return;
+    }
+
+    snap.forEach(ds => {
+      const item = ds.data();
+      if (!item.active) return;
+      const row = document.createElement('div');
+      row.className = 'calc-item-row';
+      const defaultQty = Number(item.defaultQty) || 0;
+      row.innerHTML = `
+        <div class="calc-item-name">
+          <strong>${item.name}</strong>
+          ${item.unitLabel ? `<span class="calc-unit-label">per ${item.unitLabel}</span>` : ''}
+        </div>
+        <div class="calc-item-unit-price">Rs. ${Number(item.unitPrice).toLocaleString()}</div>
+        <div class="calc-qty-wrap">
+          <button class="calc-qty-btn calc-minus" type="button">−</button>
+          <input class="calc-qty-input" type="number" value="${defaultQty}" min="${Number(item.minQty)||0}" max="9999" data-price="${item.unitPrice}">
+          <button class="calc-qty-btn calc-plus" type="button">+</button>
+        </div>
+        <div class="calc-item-subtotal">Rs. ${(defaultQty * Number(item.unitPrice)).toLocaleString()}</div>
+      `;
+      const input  = row.querySelector('.calc-qty-input');
+      const subtot = row.querySelector('.calc-item-subtotal');
+      const minus  = row.querySelector('.calc-minus');
+      const plus   = row.querySelector('.calc-plus');
+
+      function updateRow() {
+        let v = parseInt(input.value) || 0;
+        if (v < (Number(item.minQty)||0)) v = Number(item.minQty)||0;
+        input.value = v;
+        const sub = v * Number(item.unitPrice);
+        subtot.textContent = `Rs. ${sub.toLocaleString()}`;
+        updateCalcTotal();
+      }
+      minus.addEventListener('click', () => { input.value = Math.max((Number(item.minQty)||0), (parseInt(input.value)||0) - 1); updateRow(); });
+      plus.addEventListener('click',  () => { input.value = (parseInt(input.value)||0) + 1; updateRow(); });
+      input.addEventListener('input', updateRow);
+
+      listEl.appendChild(row);
+    });
+    updateCalcTotal();
+  } catch (err) {
+    console.warn("Price list error:", err);
+    listEl.innerHTML = `<p style="text-align:center; color:var(--text-muted); padding:30px;">Could not load price list.</p>`;
+  }
+}
+
+function updateCalcTotal() {
+  const inputs = document.querySelectorAll('.calc-qty-input');
+  let total = 0;
+  inputs.forEach(input => {
+    total += (parseInt(input.value) || 0) * Number(input.dataset.price);
+  });
+  const el = document.getElementById('calc-grand-total');
+  if (el) el.textContent = `Rs. ${total.toLocaleString()}`;
+}
