@@ -711,3 +711,182 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
     });
   }
 });
+
+// ════════════════════════════════════════════════
+// AUTO SLIDESHOW MODULE
+// ════════════════════════════════════════════════
+
+const MAX_SLIDESHOW_PHOTOS = 10;
+let allVaultPhotosCache  = [];
+let currentSlideshowCache = [];
+
+// Load slideshow tab data when clicked
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  if (tab.getAttribute('data-target') === 'slideshow') {
+    tab.addEventListener('click', () => {
+      loadSlideshowAdmin();
+    });
+  }
+});
+
+async function loadSlideshowAdmin() {
+  await Promise.all([loadCurrentSlideshow(), loadVaultForSlideshow()]);
+}
+
+// ── Load currently selected slideshow photos ────────
+async function loadCurrentSlideshow() {
+  const container = document.getElementById('adm-slideshow-current');
+  if (!container) return;
+  container.innerHTML = '<div class="spinner"></div>';
+  try {
+    const q    = query(collection(db, "slideshow"), orderBy("order", "asc"));
+    const snap = await getDocs(q);
+    currentSlideshowCache = snap.docs.map(ds => ({ id: ds.id, ...ds.data() }));
+    renderCurrentSlideshow();
+    updateSlideCounter();
+  } catch (err) {
+    container.innerHTML = '<p class="adm-empty adm-error">Could not load slideshow — check Firestore rules for "slideshow" collection.</p>';
+  }
+}
+
+function updateSlideCounter() {
+  const el = document.getElementById('adm-slide-counter');
+  if (el) {
+    el.textContent = `${currentSlideshowCache.length} / ${MAX_SLIDESHOW_PHOTOS} Photos`;
+    el.classList.toggle('adm-slide-counter-full', currentSlideshowCache.length >= MAX_SLIDESHOW_PHOTOS);
+  }
+}
+
+function renderCurrentSlideshow() {
+  const container = document.getElementById('adm-slideshow-current');
+  if (!container) return;
+
+  if (!currentSlideshowCache.length) {
+    container.innerHTML = '<p class="adm-empty">No photos selected yet. Add photos from your library below.</p>';
+    return;
+  }
+
+  container.innerHTML = '';
+  currentSlideshowCache.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'adm-slide-item glass-card';
+    card.innerHTML = `
+      <span class="adm-slide-num">${idx + 1}</span>
+      <img src="${item.imageUrl}" alt="Slide ${idx+1}">
+      <div class="adm-slide-item-actions">
+        <button class="adm-slide-arrow up-btn" title="Move up" ${idx === 0 ? 'disabled' : ''}><i class="fa fa-chevron-up"></i></button>
+        <button class="adm-slide-arrow down-btn" title="Move down" ${idx === currentSlideshowCache.length - 1 ? 'disabled' : ''}><i class="fa fa-chevron-down"></i></button>
+        <button class="adm-slide-remove" title="Remove from slideshow"><i class="fa fa-times"></i></button>
+      </div>
+    `;
+    card.querySelector('.up-btn')?.addEventListener('click', () => moveSlide(idx, -1));
+    card.querySelector('.down-btn')?.addEventListener('click', () => moveSlide(idx, 1));
+    card.querySelector('.adm-slide-remove').addEventListener('click', () => removeFromSlideshow(item.id));
+    container.appendChild(card);
+  });
+}
+
+async function moveSlide(idx, dir) {
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= currentSlideshowCache.length) return;
+  [currentSlideshowCache[idx], currentSlideshowCache[newIdx]] = [currentSlideshowCache[newIdx], currentSlideshowCache[idx]];
+  renderCurrentSlideshow();
+  await persistSlideshowOrder();
+}
+
+async function persistSlideshowOrder() {
+  try {
+    await Promise.all(
+      currentSlideshowCache.map((item, idx) =>
+        updateDoc(doc(db, "slideshow", item.id), { order: idx })
+      )
+    );
+  } catch (err) { console.error("Reorder failed:", err); }
+}
+
+async function removeFromSlideshow(id) {
+  try {
+    await deleteDoc(doc(db, "slideshow", id));
+    currentSlideshowCache = currentSlideshowCache.filter(i => i.id !== id);
+    renderCurrentSlideshow();
+    updateSlideCounter();
+    renderVaultForSlideshow(); // refresh library highlighting
+  } catch (err) {
+    alert("Could not remove: " + err.message);
+  }
+}
+
+// ── Load photo library to pick from ──────────────────
+async function loadVaultForSlideshow() {
+  const container = document.getElementById('adm-slideshow-library');
+  if (!container) return;
+  container.innerHTML = '<div class="spinner"></div>';
+  try {
+    const q    = query(collection(db, "photos"), orderBy("createdAt", "desc"));
+    const snap = await getDocs(q);
+    allVaultPhotosCache = snap.docs.map(ds => ({ id: ds.id, ...ds.data() }));
+    renderVaultForSlideshow();
+  } catch (err) {
+    container.innerHTML = '<p class="adm-empty adm-error">Could not load photo library.</p>';
+  }
+}
+
+function renderVaultForSlideshow() {
+  const container = document.getElementById('adm-slideshow-library');
+  if (!container) return;
+
+  if (!allVaultPhotosCache.length) {
+    container.innerHTML = '<p class="adm-empty">No photos in your library yet. Upload photos first.</p>';
+    return;
+  }
+
+  const selectedUrls = new Set(currentSlideshowCache.map(i => i.imageUrl));
+  const isFull = currentSlideshowCache.length >= MAX_SLIDESHOW_PHOTOS;
+
+  container.innerHTML = '';
+  allVaultPhotosCache.forEach(photo => {
+    const isSelected = selectedUrls.has(photo.imageUrl);
+    const card = document.createElement('div');
+    card.className = `adm-lib-pick-card${isSelected ? ' adm-lib-selected' : ''}${(isFull && !isSelected) ? ' adm-lib-disabled' : ''}`;
+    card.innerHTML = `
+      <img src="${photo.imageUrl}" alt="${photo.category}" loading="lazy">
+      <div class="adm-lib-pick-overlay">
+        ${isSelected
+          ? '<i class="fa fa-check-circle"></i>'
+          : (isFull ? '<span class="adm-lib-full-text">Max 10</span>' : '<i class="fa fa-plus-circle"></i>')
+        }
+      </div>
+      <span class="adm-lib-pick-cat">${photo.category}</span>
+    `;
+    if (!isSelected && !isFull) {
+      card.addEventListener('click', () => addToSlideshow(photo));
+    } else if (isSelected) {
+      card.addEventListener('click', () => {
+        const match = currentSlideshowCache.find(i => i.imageUrl === photo.imageUrl);
+        if (match) removeFromSlideshow(match.id);
+      });
+    }
+    container.appendChild(card);
+  });
+}
+
+async function addToSlideshow(photo) {
+  if (currentSlideshowCache.length >= MAX_SLIDESHOW_PHOTOS) {
+    alert(`Maximum ${MAX_SLIDESHOW_PHOTOS} photos allowed in the slideshow.`);
+    return;
+  }
+  try {
+    const newDoc = await addDoc(collection(db, "slideshow"), {
+      imageUrl: photo.imageUrl,
+      photoId:  photo.id,
+      order:    currentSlideshowCache.length,
+      addedAt:  new Date().toISOString(),
+    });
+    currentSlideshowCache.push({ id: newDoc.id, imageUrl: photo.imageUrl, photoId: photo.id, order: currentSlideshowCache.length });
+    renderCurrentSlideshow();
+    renderVaultForSlideshow();
+    updateSlideCounter();
+  } catch (err) {
+    alert("Could not add to slideshow: " + err.message);
+  }
+}
