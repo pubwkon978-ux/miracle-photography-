@@ -2217,3 +2217,15 @@ textarea.form-control { resize: vertical; min-height: 90px; }
   padding: 14px;
   font-size: 0.82rem;
 }
+
+/* ─── Gallery Load More (User Page) ──────────── */
+.gallery-load-more-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 30px;
+  padding: 14px;
+  font-size: 0.8rem;
+}
