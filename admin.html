@@ -46,6 +46,9 @@
         <a class="adm-nav-link nav-tab" data-target="vault">
           <i class="fa fa-images"></i><span>Photo Library</span>
         </a>
+        <a class="adm-nav-link nav-tab" data-target="slideshow">
+          <i class="fa fa-play-circle"></i><span>Auto Slideshow</span>
+        </a>
         <a class="adm-nav-link nav-tab" data-target="schedule">
           <i class="fa fa-calendar-alt"></i><span>Bookings</span>
           <span class="adm-badge" id="sidebar-pending-count" style="display:none;"></span>
@@ -170,6 +173,30 @@
           </button>
         </div>
         <div class="adm-vault-grid" id="vault-items-container">
+          <div class="spinner"></div>
+        </div>
+      </section>
+
+      <!-- ── AUTO SLIDESHOW ── -->
+      <section id="slideshow" class="admin-section">
+        <div class="adm-page-header">
+          <div>
+            <h1 class="adm-page-title">Auto Slideshow</h1>
+            <p class="adm-page-sub">Choose which photos appear in the homepage slideshow</p>
+          </div>
+          <div class="adm-slide-counter glass-card" id="adm-slide-counter">0 / 10 Photos</div>
+        </div>
+
+        <!-- Currently in slideshow -->
+        <h3 class="adm-section-label">Currently Showing <span style="color:var(--text-muted); text-transform:none; letter-spacing:0; font-size:0.78rem;">(drag order with ↑↓ arrows)</span></h3>
+        <div class="adm-slideshow-current" id="adm-slideshow-current">
+          <div class="spinner"></div>
+        </div>
+
+        <!-- Add from library -->
+        <h3 class="adm-section-label" style="margin-top:36px;">Add From Photo Library</h3>
+        <p class="adm-page-sub" style="margin-bottom:18px;">Click a photo to add it to the slideshow (max 10)</p>
+        <div class="adm-slideshow-library" id="adm-slideshow-library">
           <div class="spinner"></div>
         </div>
       </section>
