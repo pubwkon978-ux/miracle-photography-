@@ -264,14 +264,21 @@ document.addEventListener('keydown', e => {
 async function initSlideshowCarousel() {
   if (!elements.slideshow) return;
   try {
-    const q = query(collection(db, "photos"), orderBy("createdAt", "desc"), limit(8));
-    const snap = await getDocs(q);
+    // Use admin-curated slideshow collection (falls back to latest photos if empty)
+    const slideQ    = query(collection(db, "slideshow"), orderBy("order", "asc"));
+    let snap = await getDocs(slideQ);
+    let usingFallback = false;
+
+    if (snap.empty) {
+      const fallbackQ = query(collection(db, "photos"), orderBy("createdAt", "desc"), limit(6));
+      snap = await getDocs(fallbackQ);
+      usingFallback = true;
+    }
 
     document.getElementById('slideshow-loader')?.remove();
 
     if (snap.empty) {
-      elements.slideshow.style.display = "none";
-      document.querySelector('.slideshow-wrap')?.style && (document.querySelector('.slideshow-wrap').style.display = 'none');
+      document.querySelector('.slideshow-wrap')?.remove();
       return;
     }
 
