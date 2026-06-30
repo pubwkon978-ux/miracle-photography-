@@ -11,6 +11,14 @@ const ADMIN_EMAIL       = "pubwkon978@gmail.com";
 const CLOUDINARY_URL    = "https://api.cloudinary.com/v1_1/dnvx958gz/image/upload";
 const CLOUDINARY_PRESET = "miracle";
 const CLOUDINARY_FOLDER = "miracle";
+const VAULT_PAGE_SIZE   = 24;
+
+// Returns a small, optimized Cloudinary thumbnail URL instead of the full-size
+// original — this is what was freezing the browser tab when many photos loaded.
+function cloudinaryThumb(url, size = 300) {
+  if (!url || !url.includes('/upload/')) return url;
+  return url.replace('/upload/', `/upload/w_${size},h_${size},c_fill,q_auto,f_auto/`);
+}
 
 let allBookingsCache = [];
 
@@ -114,7 +122,10 @@ async function loadDashRecentBookings() {
   }
 }
 
-// ── Vault ───────────────────────────────────────────
+// ── Vault (paginated + thumbnail-optimized to prevent browser freeze) ──
+let vaultAllDocs   = [];   // full list of {id, data}
+let vaultRenderedCount = 0;
+
 window.loadLibraryVault = async function() {
   const container = document.getElementById('vault-items-container');
   if (!container) return;
@@ -122,35 +133,64 @@ window.loadLibraryVault = async function() {
   try {
     const q    = query(collection(db, "photos"), orderBy("createdAt", "desc"));
     const snap = await getDocs(q);
+    vaultAllDocs = snap.docs.map(ds => ({ id: ds.id, data: ds.data() }));
+    vaultRenderedCount = 0;
     container.innerHTML = '';
-    if (snap.empty) {
+
+    if (!vaultAllDocs.length) {
       container.innerHTML = '<p class="adm-empty" style="grid-column:1/-1">No photos yet. Upload some!</p>';
       return;
     }
-    snap.forEach(ds => {
-      const data = ds.data();
-      const card = document.createElement('div');
-      card.className = 'adm-vault-card';
-      card.innerHTML = `
-        <img src="${data.imageUrl}" alt="${data.category}" loading="lazy">
-        <div class="adm-vault-overlay">
-          <span class="adm-vault-cat">${data.category}</span>
-          <button class="adm-vault-del-btn" title="Delete"><i class="fa fa-trash"></i></button>
-        </div>
-      `;
-      card.querySelector('.adm-vault-del-btn').addEventListener('click', async () => {
-        if (confirm('Delete this photo?')) {
-          await deleteDoc(doc(db, "photos", ds.id));
-          card.style.opacity = '0'; card.style.transform = 'scale(0.8)';
-          setTimeout(() => { card.remove(); loadDashboardMetrics(); }, 350);
-        }
-      });
-      container.appendChild(card);
-    });
+    renderVaultPage();
   } catch (err) {
     container.innerHTML = '<p class="adm-empty adm-error" style="grid-column:1/-1">Cannot load photos — check Firestore rules.</p>';
   }
 };
+
+function renderVaultPage() {
+  const container = document.getElementById('vault-items-container');
+  if (!container) return;
+
+  // Remove any existing "load more" button before appending new cards
+  document.getElementById('vault-load-more-btn')?.remove();
+
+  const nextBatch = vaultAllDocs.slice(vaultRenderedCount, vaultRenderedCount + VAULT_PAGE_SIZE);
+
+  nextBatch.forEach(({ id, data }) => {
+    const card = document.createElement('div');
+    card.className = 'adm-vault-card';
+    card.innerHTML = `
+      <img src="${cloudinaryThumb(data.imageUrl, 300)}" alt="${data.category}" loading="lazy">
+      <div class="adm-vault-overlay">
+        <span class="adm-vault-cat">${data.category}</span>
+        <button class="adm-vault-del-btn" title="Delete"><i class="fa fa-trash"></i></button>
+      </div>
+    `;
+    card.querySelector('.adm-vault-del-btn').addEventListener('click', async () => {
+      if (confirm('Delete this photo?')) {
+        await deleteDoc(doc(db, "photos", id));
+        card.style.opacity = '0'; card.style.transform = 'scale(0.8)';
+        setTimeout(() => {
+          card.remove();
+          vaultAllDocs = vaultAllDocs.filter(d => d.id !== id);
+          loadDashboardMetrics();
+        }, 350);
+      }
+    });
+    container.appendChild(card);
+  });
+
+  vaultRenderedCount += nextBatch.length;
+
+  if (vaultRenderedCount < vaultAllDocs.length) {
+    const moreBtn = document.createElement('button');
+    moreBtn.id = 'vault-load-more-btn';
+    moreBtn.className = 'btn-outline adm-load-more-btn';
+    moreBtn.innerHTML = `<i class="fa fa-chevron-down"></i> Load More (${vaultAllDocs.length - vaultRenderedCount} remaining)`;
+    moreBtn.addEventListener('click', renderVaultPage);
+    container.parentElement.appendChild(moreBtn);
+  }
+}
 
 // ── Drag & Drop Upload ──────────────────────────────
 const dropzone    = document.getElementById('adm-dropzone');
@@ -772,7 +812,7 @@ function renderCurrentSlideshow() {
     card.className = 'adm-slide-item glass-card';
     card.innerHTML = `
       <span class="adm-slide-num">${idx + 1}</span>
-      <img src="${item.imageUrl}" alt="Slide ${idx+1}">
+      <img src="${cloudinaryThumb(item.imageUrl, 250)}" alt="Slide ${idx+1}">
       <div class="adm-slide-item-actions">
         <button class="adm-slide-arrow up-btn" title="Move up" ${idx === 0 ? 'disabled' : ''}><i class="fa fa-chevron-up"></i></button>
         <button class="adm-slide-arrow down-btn" title="Move down" ${idx === currentSlideshowCache.length - 1 ? 'disabled' : ''}><i class="fa fa-chevron-down"></i></button>
@@ -849,7 +889,7 @@ function renderVaultForSlideshow() {
     const card = document.createElement('div');
     card.className = `adm-lib-pick-card${isSelected ? ' adm-lib-selected' : ''}${(isFull && !isSelected) ? ' adm-lib-disabled' : ''}`;
     card.innerHTML = `
-      <img src="${photo.imageUrl}" alt="${photo.category}" loading="lazy">
+      <img src="${cloudinaryThumb(photo.imageUrl, 220)}" alt="${photo.category}" loading="lazy">
       <div class="adm-lib-pick-overlay">
         ${isSelected
           ? '<i class="fa fa-check-circle"></i>'
