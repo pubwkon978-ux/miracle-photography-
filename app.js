@@ -8,6 +8,13 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
 // ── Categories & Images ─────────────────────────────
+// Returns a smaller, optimized Cloudinary thumbnail URL for fast loading.
+// Full quality is only used in the lightbox when a user opens a photo.
+function cloudinaryThumb(url, size = 400) {
+  if (!url || !url.includes('/upload/')) return url;
+  return url.replace('/upload/', `/upload/w_${size},h_${size},c_fill,q_auto,f_auto/`);
+}
+
 const AVAILABLE_CATEGORIES = [
   "Wedding Photography", "Pre Shoot", "Birthday Events",
   "Baby Photography", "Fashion Photography", "Nature Photography",
@@ -161,6 +168,10 @@ function renderGalleryFilters() {
 // FIX: All photos are fetched once and filtered client-side.
 // This avoids the Firestore composite index requirement for
 // where("category")+orderBy("createdAt") queries.
+const GALLERY_PAGE_SIZE = 16;
+let currentGalleryPhotos  = [];
+let galleryRenderedCount  = 0;
+
 async function fetchPortfolioGallery(categoryFilter = null) {
   if (!elements.galleryContainer) return;
 
@@ -198,15 +209,10 @@ async function fetchPortfolioGallery(categoryFilter = null) {
       return;
     }
 
-    lightboxImages = photos.map(p => p.imageUrl);
-
-    photos.forEach((photo, idx) => {
-      const item = document.createElement('div');
-      item.className = 'masonry-item';
-      item.innerHTML = `<img src="${photo.imageUrl}" alt="${photo.category}" loading="lazy">`;
-      item.addEventListener('click', () => openLightbox(idx));
-      elements.galleryContainer.appendChild(item);
-    });
+    currentGalleryPhotos = photos;
+    galleryRenderedCount = 0;
+    lightboxImages = photos.map(p => p.imageUrl); // full quality for lightbox viewing
+    renderGalleryPage();
 
   } catch (err) {
     console.error("Gallery load error:", err);
@@ -218,6 +224,33 @@ async function fetchPortfolioGallery(categoryFilter = null) {
           Check Firebase Console → Firestore → Rules and make sure photos collection allows public reads.
         </p>
       </div>`;
+  }
+}
+
+function renderGalleryPage() {
+  if (!elements.galleryContainer) return;
+  document.getElementById('gallery-load-more-btn')?.remove();
+
+  const nextBatch = currentGalleryPhotos.slice(galleryRenderedCount, galleryRenderedCount + GALLERY_PAGE_SIZE);
+
+  nextBatch.forEach((photo, i) => {
+    const idx = galleryRenderedCount + i;
+    const item = document.createElement('div');
+    item.className = 'masonry-item';
+    item.innerHTML = `<img src="${cloudinaryThumb(photo.imageUrl, 400)}" alt="${photo.category}" loading="lazy">`;
+    item.addEventListener('click', () => openLightbox(idx));
+    elements.galleryContainer.appendChild(item);
+  });
+
+  galleryRenderedCount += nextBatch.length;
+
+  if (galleryRenderedCount < currentGalleryPhotos.length) {
+    const moreBtn = document.createElement('button');
+    moreBtn.id = 'gallery-load-more-btn';
+    moreBtn.className = 'btn-outline gallery-load-more-btn';
+    moreBtn.innerHTML = `<i class="fa fa-chevron-down"></i> Load More Photos (${currentGalleryPhotos.length - galleryRenderedCount} remaining)`;
+    moreBtn.addEventListener('click', renderGalleryPage);
+    elements.galleryContainer.parentElement.appendChild(moreBtn);
   }
 }
 
@@ -287,7 +320,7 @@ async function initSlideshowCarousel() {
       const data = d.data();
       const div = document.createElement('div');
       div.className = `slide${idx === 0 ? ' active' : ''}`;
-      div.style.backgroundImage = `url('${data.imageUrl}')`;
+      div.style.backgroundImage = `url('${cloudinaryThumb(data.imageUrl, 900)}')`;
       elements.slideshow.appendChild(div);
       idx++;
     });
